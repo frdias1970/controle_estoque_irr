@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📦 Controle de Estoque Cloud</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+    }
+
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; margin: 0; padding: 0; }
+    body { background-color: var(--bg); color: var(--text); padding: 20px; line-height: 1.5; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    header { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; }
+    .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+    
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+    .tab-btn { padding: 8px 16px; border: none; background: none; cursor: pointer; font-weight: 600; color: #64748b; border-radius: 6px; }
+    .tab-btn.active { background: var(--primary); color: white; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .card { background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); padding: 20px; margin-bottom: 20px; }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background-color: #f1f5f9; font-size: 0.85rem; text-transform: uppercase; }
+
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: white; }
+    .badge-danger { background-color: var(--danger); }
+    .badge-success { background-color: var(--success); }
+
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
+    input, select, textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; }
+    
+    .btn { padding: 8px 16px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; background: var(--primary); color: white; }
+    .btn:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #64748b; }
+    .btn-danger { background: var(--danger); }
+
+    /* Modal Login */
+    .modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { background: white; padding: 30px; border-radius: 8px; width: 100%; max-width: 400px; }
+  </style>
+</head>
+<body>
+
+  <!-- Modal de Autenticação -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h2 style="margin-bottom: 15px;">🔒 Acesso ao Sistema</h2>
+      <div class="form-group">
+        <label>Nome do Usuário</label>
+        <input type="text" id="loginNome" placeholder="Seu nome ou setor">
+      </div>
+      <div class="form-group">
+        <label>Tipo de Acesso</label>
+        <select id="loginPerfil">
+          <option value="consulta">👁️ Apenas Consulta / Leitura</option>
+          <option value="admin">✏️ Operador / Administrador</option>
+        </select>
+      </div>
+      <div class="form-group" id="groupSenha" style="display: none;">
+        <label>Senha de Administrador</label>
+        <input type="password" id="loginSenha" placeholder="Digite a senha">
+      </div>
+      <button class="btn" style="width: 100%;" onclick="autenticar()">Entrar</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div>
+        <h1>📦 Controle de Estoque</h1>
+        <small style="color: #64748b;">Sincronizado via JSONBin.io</small>
+      </div>
+      <div class="user-info">
+        <span id="txtUsuario">Visitante</span>
+        <span id="badgePerfil" class="badge badge-success">Consulta</span>
+        <button class="btn btn-secondary" onclick="sair()" style="padding: 4px 8px; font-size: 0.8rem;">Sair</button>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="mudarAba('abaEstoque', this)">📦 Estoque Atual</button>
+      <button class="tab-btn" onclick="mudarAba('abaMovimentar', this)">🔄 Movimentar</button>
+      <button class="tab-btn" onclick="mudarAba('abaCompras', this)">📋 Lista de Compras</button>
+      <button class="tab-btn" onclick="mudarAba('abaLogs', this)">📜 Logs / Histórico</button>
+      <button class="tab-btn admin-only" onclick="mudarAba('abaCadastrar', this)" style="display:none;">➕ Novo Produto</button>
+    </div>
+
+    <!-- ABA 1: ESTOQUE ATUAL -->
+    <div id="abaEstoque" class="tab-content active">
+      <div class="card">
+        <input type="text" id="buscaProduto" placeholder="🔍 Buscar produto por nome..." oninput="renderizarTabelaEstoque()">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Unidade</th>
+              <th>Estoque Mín.</th>
+              <th>Estoque Máx.</th>
+              <th>Saldo Atual</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbEstoque"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ABA 2: REGISTRAR MOVIMENTAÇÃO -->
+    <div id="abaMovimentar" class="tab-content">
+      <div class="card">
+        <h2>Registrar Entrada ou Saída</h2>
+        <div id="formMovimentacaoRestrito" style="display:none; color: var(--danger); margin-top: 10px;">
+          ⚠️ Você está no modo <strong>Apenas Consulta</strong>. Alterne para o perfil de Operador para registrar movimentações.
+        </div>
+        <form id="formMovimentar" onsubmit="salvarMovimentacao(event)" style="margin-top: 15px;">
+          <div class="form-group">
+            <label>Selecione o Produto</label>
+            <select id="movProdutoId" required></select>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Movimentação</label>
+            <select id="movTipo" required>
+              <option value="ENTRADA">➕ Entrada (+)</option>
+              <option value="SAIDA">➖ Saída (-)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Quantidade</label>
+            <input type="number" id="movQtd" min="1" step="any" required>
+          </div>
+          <div class="form-group">
+            <label>Observação / Destino</label>
+            <input type="text" id="movObs" placeholder="Ex: Setor UTI, NF 1234, etc.">
+          </div>
+          <button type="submit" id="btnSalvarMov" class="btn">Confirmar Registro</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ABA 3: LISTA DE COMPRAS -->
+    <div id="abaCompras" class="tab-content">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2>📋 Sugestão de Lista de Compras</h2>
+          <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        </div>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 15px;">
+          Produtos com saldo atual menor ou igual ao estoque mínimo definido.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Saldo Atual</th>
+              <th>Estoque Mínimo</th>
+              <th>Estoque Máximo</th>
+              <th>Qtd. Sugerida</th>
+            </tr>
+          </thead>
+          <tbody id="tbCompras"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ABA 4: LOGS / HISTÓRICO -->
+    <div id="abaLogs" class="tab-content">
+      <div class="card">
+        <h2>📜 Histórico de Atividades / Logs</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Data/Hora</th>
+              <th>Usuário</th>
+              <th>Ação</th>
+              <th>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody id="tbLogs"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ABA 5: CADASTRAR PRODUTO (ADMIN) -->
+    <div id="abaCadastrar" class="tab-content">
+      <div class="card">
+        <h2>➕ Cadastrar Novo Produto</h2>
+        <form onsubmit="salvarNovoProduto(event)" style="margin-top: 15px;">
+          <div class="form-group">
+            <label>Nome do Produto</label>
+            <input type="text" id="cadNome" required>
+          </div>
+          <div class="form-group">
+            <label>Unidade de Medida</label>
+            <input type="text" id="cadUnidade" placeholder="UN, CX, Frasco, Ampola" required>
+          </div>
+          <div class="form-group">
+            <label>Estoque Mínimo</label>
+            <input type="number" id="cadMin" required>
+          </div>
+          <div class="form-group">
+            <label>Estoque Máximo</label>
+            <input type="number" id="cadMax" required>
+          </div>
+          <div class="form-group">
+            <label>Saldo Inicial</label>
+            <input type="number" id="cadSaldo" value="0" required>
+          </div>
+          <button type="submit" class="btn">Salvar Produto</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- CONFIGURAÇÃO DO JSONBIN.IO ---
+    const JSONBIN_BIN_ID = "SEU_BIN_ID_AQUI"; 
+    const JSONBIN_MASTER_KEY = "SUA_MASTER_KEY_AQUI"; 
+    const SENHA_ADMIN_DEFAULT = "admin123";
+
+    // --- ESTADO DA APLICAÇÃO ---
+    let appData = { produtos: [], movimentacoes: [], logs: [] };
+    let usuarioAtual = { nome: "", perfil: "consulta" };
+
+    document.getElementById('loginPerfil').addEventListener('change', (e) => {
+      document.getElementById('groupSenha').style.display = e.target.value === 'admin' ? 'block' : 'none';
+    });
+
+    async function carregarDadosDoCloud() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+          headers: { 'X-Master-Key': JSONBIN_MASTER_KEY }
+        });
+        const data = await res.json();
+        appData = data.record || { produtos: [], movimentacoes: [], logs: [] };
+        renderizarTabelaEstoque();
+        carregarSelectProdutos();
+        renderizarListaCompras();
+        renderizarLogs();
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      }
+    }
+
+    async function salvarDadosNoCloud() {
+      try {
+        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': JSONBIN_MASTER_KEY
+          },
+          body: JSON.stringify(appData)
+        });
+        carregarDadosDoCloud();
+      } catch (err) {
+        alert("Erro ao salvar dados na nuvem!");
+      }
+    }
+
+    function autenticar() {
+      const nome = document.getElementById('loginNome').value.trim() || 'Usuário';
+      const perfil = document.getElementById('loginPerfil').value;
+      const senha = document.getElementById('loginSenha').value;
+
+      if (perfil === 'admin' && senha !== SENHA_ADMIN_DEFAULT) {
+        alert('Senha incorreta!');
+        return;
+      }
+
+      usuarioAtual = { nome, perfil };
+      document.getElementById('txtUsuario').innerText = nome;
+      document.getElementById('badgePerfil').innerText = perfil === 'admin' ? 'Operador' : 'Consulta';
+      document.getElementById('loginModal').style.display = 'none';
+
+      // Ajusta UI com base no perfil
+      if (perfil !== 'admin') {
+        document.getElementById('btnSalvarMov').disabled = true;
+        document.getElementById('formMovimentacaoRestrito').style.display = 'block';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+      } else {
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'inline-block');
+      }
+
+      carregarDadosDoCloud();
+    }
+
+    function registrarLog(acao, detalhes) {
+      const novoLog = {
+        id: Date.now(),
+        data: new Date().toLocaleString('pt-BR'),
+        usuario: `${usuarioAtual.nome} (${usuarioAtual.perfil})`,
+        acao,
+        detalhes
+      };
+      appData.logs.unshift(novoLog);
+    }
+
+    function renderizarTabelaEstoque() {
+      const busca = document.getElementById('buscaProduto').value.toLowerCase();
+      const tbody = document.getElementById('tbEstoque');
+      tbody.innerHTML = '';
+
+      appData.produtos
+        .filter(p => p.nome.toLowerCase().includes(busca))
+        .forEach(p => {
+          const isBaixo = p.saldo_atual <= p.estoque_min;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${p.nome}</strong></td>
+            <td>${p.unidade}</td>
+            <td>${p.estoque_min}</td>
+            <td>${p.estoque_max}</td>
+            <td><strong>${p.saldo_atual}</strong></td>
+            <td><span class="badge ${isBaixo ? 'badge-danger' : 'badge-success'}">${isBaixo ? 'ESTOQUE BAIXO' : 'OK'}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+    }
+
+    function renderizarListaCompras() {
+      const tbody = document.getElementById('tbCompras');
+      tbody.innerHTML = '';
+
+      appData.produtos
+        .filter(p => p.saldo_atual <= p.estoque_min)
+        .forEach(p => {
+          const qtdSugerida = p.estoque_max - p.saldo_atual;
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${p.nome}</strong></td>
+            <td>${p.saldo_atual}</td>
+            <td>${p.estoque_min}</td>
+            <td>${p.estoque_max}</td>
+            <td><strong style="color: var(--primary);">${qtdSugerida > 0 ? qtdSugerida : 0} ${p.unidade}</strong></td>
+          `;
+          tbody.appendChild(tr);
+        });
+    }
+
+    function renderizarLogs() {
+      const tbody = document.getElementById('tbLogs');
+      tbody.innerHTML = '';
+      (appData.logs || []).forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${l.data}</td><td>${l.usuario}</td><td>${l.acao}</td><td>${l.detalhes}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function carregarSelectProdutos() {
+      const select = document.getElementById('movProdutoId');
+      select.innerHTML = '<option value="">Selecione...</option>';
+      appData.produtos.forEach(p => {
+        select.innerHTML += `<option value="${p.id}">${p.nome} (Saldo: ${p.saldo_atual})</option>`;
+      });
+    }
+
+    async function salvarMovimentacao(e) {
+      e.preventDefault();
+      if (usuarioAtual.perfil !== 'admin') return alert('Acesso negado!');
+
+      const prodId = parseInt(document.getElementById('movProdutoId').value);
+      const tipo = document.getElementById('movTipo').value;
+      const qtd = parseFloat(document.getElementById('movQtd').value);
+      const obs = document.getElementById('movObs').value;
+
+      const produto = appData.produtos.find(p => p.id === prodId);
+      if (!produto) return;
+
+      if (tipo === 'SAIDA' && produto.saldo_atual < qtd) {
+        return alert('Saldo insuficiente para realizar esta saída!');
+      }
+
+      produto.saldo_atual = tipo === 'ENTRADA' ? produto.saldo_atual + qtd : produto.saldo_atual - qtd;
+
+      appData.movimentacoes.push({ id: Date.now(), produtoId: prodId, tipo, qtd, obs, data: new Date().toISOString() });
+      registrarLog('Movimentação de Estoque', `${tipo} de ${qtd} ${produto.unidade} de '${produto.nome}'. Motivo/Obs: ${obs}`);
+
+      await salvarDadosNoCloud();
+      alert('Movimentação registrada com sucesso!');
+      document.getElementById('formMovimentar').reset();
+    }
+
+    async function salvarNovoProduto(e) {
+      e.preventDefault();
+      if (usuarioAtual.perfil !== 'admin') return;
+
+      const nome = document.getElementById('cadNome').value;
+      const unidade = document.getElementById('cadUnidade').value;
+      const min = parseFloat(document.getElementById('cadMin').value);
+      const max = parseFloat(document.getElementById('cadMax').value);
+      const saldo = parseFloat(document.getElementById('cadSaldo').value);
+
+      const novo = { id: Date.now(), nome, unidade, estoque_min: min, estoque_max: max, saldo_atual: saldo };
+      appData.produtos.push(novo);
+      registrarLog('Cadastro de Produto', `Cadastrou o produto '${nome}' com saldo inicial de ${saldo}`);
+
+      await salvarDadosNoCloud();
+      alert('Produto cadastrado com sucesso!');
+      mudarAba('abaEstoque', document.querySelectorAll('.tab-btn')[0]);
+    }
+
+    function mudarAba(abaId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(abaId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function sair() { location.reload(); }
+  </script>
+</body>
+</html>
