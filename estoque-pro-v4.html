@@ -58,7 +58,7 @@
 </div>
 <div class='modal-footer' style='flex-direction:column;gap:10px'>
 <button class='btn btn-primary' style='width:100%' onclick='autenticar()'>Entrar no Sistema</button>
-<button class='btn btn-outline' style='width:100%' onclick='acessarComoVisitante()'>Acessar como Visitante (Apenas Consulta)</button>
+<button class='btn btn-outline' style='width:100%' onclick='acessarComoVisitante()'>Apenas Consulta (Sem Login)</button>
 </div>
 </div>
 </div>
@@ -751,8 +751,8 @@ Ela serve apenas para evitar alteracoes acidentais, nao como seguranca real. Nao
 </div>
 
 <script>
-const JSONBIN_BIN_ID=localStorage.getItem('jsonbin_bin_id')||'SEU_BIN_ID_AQUI';
-const JSONBIN_MASTER_KEY=localStorage.getItem('jsonbin_master_key')||'SUA_MASTER_KEY_AQUI';
+const JSONBIN_BIN_ID=localStorage.getItem('jsonbin_bin_id')||'6a8ca42dda38895dfe0c029d';
+const JSONBIN_MASTER_KEY=localStorage.getItem('jsonbin_master_key')||'$2a$10$FuvfwIA6WgrNDAec1abbHuVvlC5NpoqU5XnMkEZCBe1pJNrMjhG26';
 let SENHA_ADMIN=localStorage.getItem('estoque_senha_admin')||'admin123';
 const DADOS_INICIAIS={
   "produtos": [
@@ -2554,13 +2554,13 @@ async function carregarDadosDoCloud(forcar=false){
     const url=`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest?_t=${Date.now()}`;
     const res=await fetch(url,{headers:{'X-Master-Key':JSONBIN_MASTER_KEY}});
     if(!res.ok){
-      if(res.status===404) throw new Error('Bin nao encontrado (404). Verifique o Bin ID ou clique em "Enviar Dados para Nuvem" na aba Configuracoes.');
-      if(res.status===401||res.status===403) throw new Error('Chave de acesso invalida. Verifique a Master Key.');
+      if(res.status===404) throw new Error('Bin nao encontrado (404). Clique em "Enviar Dados para Nuvem" na aba Configuracoes.');
+      if(res.status===401||res.status===403) throw new Error('Chave de acesso invalida.');
       throw new Error('Erro HTTP '+res.status);
     }
     const data=await res.json();
     if(!data.record||(typeof data.record==='object'&&Object.keys(data.record).length===0)){
-      throw new Error('Bin existe mas esta vazio. Use "Enviar Dados para Nuvem" na aba Configuracoes.');
+      throw new Error('Bin vazio. Clique em "Enviar Dados para Nuvem" na aba Configuracoes.');
     }
     appData=data.record;
     if(!appData.categorias)appData.categorias=['Medicamentos','Materiais','Equipamentos','Limpeza','Outros'];
@@ -2568,18 +2568,21 @@ async function carregarDadosDoCloud(forcar=false){
     if(!appData.movimentacoes)appData.movimentacoes=[];
     if(!appData.logs)appData.logs=[];
     atualizarUI();
-    toast('Dados sincronizados com sucesso!','success',4000)
+    toast('Dados sincronizados com sucesso!','success',3000);
   }catch(err){
     console.error('Falha ao carregar da nuvem:',err);
-    toast('Erro ao carregar dados: '+err.message,'error',8000);
+    toast('Erro ao sincronizar: '+err.message,'error',6000);
+    // Fallback para dados locais se nuvem falhar
     if(appData.produtos.length===0&&DADOS_INICIAIS){
-      console.log('Carregando dados locais como fallback...');
       appData=JSON.parse(JSON.stringify(DADOS_INICIAIS));
       atualizarUI();
-      toast('Dados locais carregados. Configure o JSONBin para sincronizar na nuvem.','warning',6000);
     }
   }finally{
-    showLoading(false)
+    showLoading(false);
+    // Se ninguém logou ainda, mostra o modal de login após carregar
+    if(!usuarioAtual.nome){
+      document.getElementById('loginModal').style.display='flex';
+    }
   }
 }
 async function salvarDadosNoCloud(){
@@ -2646,30 +2649,6 @@ function atualizarUI(){
   renderizarRelatorios();
   atualizarFiltrosCategoria()
 }
-function mostrarAvisoConfiguracao(){
-  const modalBody=document.querySelector('#loginModal .modal-body');
-  if(!modalBody.querySelector('.aviso-config')){
-    const aviso=document.createElement('div');
-    aviso.className='aviso-config';
-    aviso.style.cssText='background:var(--warning-bg);border-left:4px solid var(--warning);padding:12px 16px;border-radius:8px;margin-bottom:16px;color:#92400e;font-size:.9rem';
-    aviso.innerHTML='<strong>⚠️ Primeiro Acesso</strong><br>JSONBin.io não está configurado. Você precisa informar o Bin ID e Master Key para sincronizar os dados na nuvem.<br><br><button class="btn btn-primary" style="width:100%" onclick="entrarComoAdminRapido()">Entrar como Admin para Configurar</button><hr style="border:0;border-top:1px solid var(--border);margin:12px 0"><button class="btn btn-outline" style="width:100%" onclick="entrarComoVisitanteDireto()">Ignorar e Acessar como Visitante (Dados Locais)</button>';
-    modalBody.insertBefore(aviso,modalBody.firstChild);
-  }
-}
-function entrarComoAdminRapido(){
-  document.getElementById('loginNome').value='Admin';
-  document.getElementById('loginPerfil').value='admin';
-  document.getElementById('groupSenha').style.display='block';
-  document.getElementById('groupConfig').style.display=(SENHA_ADMIN==='admin123')?'block':'none';
-  document.getElementById('loginSenha').focus();
-  const aviso=document.querySelector('.aviso-config');
-  if(aviso)aviso.remove();
-}
-function entrarComoVisitanteDireto(){
-  const aviso=document.querySelector('.aviso-config');
-  if(aviso)aviso.remove();
-  acessarComoVisitante();
-}
 
 function acessarComoVisitante(){
   usuarioAtual={nome:'Visitante',perfil:'consulta'};
@@ -2681,11 +2660,8 @@ function acessarComoVisitante(){
   document.getElementById('btnSalvarMov').disabled=true;
   document.getElementById('msgMovRestrito').style.display='block';
   document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
-  if(isJsonBinConfigurado()){
-    carregarDadosDoCloud();
-  }else{
-    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',6000);
-  }
+  // Dados já carregados no DOMContentLoaded, apenas atualiza UI
+  atualizarUI();
 }
 
 function autenticar(){
@@ -2719,11 +2695,8 @@ function autenticar(){
     document.getElementById('msgMovRestrito').style.display='none';
     document.querySelectorAll('.admin-only').forEach(el=>el.style.display='inline-block')
   }
-  if(isJsonBinConfigurado()){
-    carregarDadosDoCloud();
-  }else{
-    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',6000);
-  }
+  // Dados já carregados no DOMContentLoaded, apenas atualiza UI
+  atualizarUI();
 }
 function sair(){
   usuarioAtual={nome:'',perfil:'consulta'};
@@ -3458,19 +3431,11 @@ function salvarConfigAPI(){
   toast('Configuracao salva! Recarregue a pagina.','success')
 }
 document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('configBinId').value=JSONBIN_BIN_ID==='SEU_BIN_ID_AQUI'?'':JSONBIN_BIN_ID;
-  document.getElementById('configMasterKey').value=JSONBIN_MASTER_KEY==='SUA_MASTER_KEY_AQUI'?'':JSONBIN_MASTER_KEY;
-  // Sempre inicia com dados locais para nao ficar vazio
-  if(appData.produtos.length===0&&DADOS_INICIAIS){
-    appData=JSON.parse(JSON.stringify(DADOS_INICIAIS));
-    atualizarUI();
-  }
-  if(isJsonBinConfigurado()){
-    carregarDadosDoCloud();
-  }else{
-    // Sem JSONBin: mostra modal com aviso especial
-    mostrarAvisoConfiguracao();
-  }
+  // Preenche campos de config (visíveis apenas pro admin)
+  document.getElementById('configBinId').value=JSONBIN_BIN_ID;
+  document.getElementById('configMasterKey').value=JSONBIN_MASTER_KEY;
+  // Sempre tenta carregar da nuvem primeiro
+  carregarDadosDoCloud();
 });
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
