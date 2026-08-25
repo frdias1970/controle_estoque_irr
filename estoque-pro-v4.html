@@ -1,0 +1,3485 @@
+<!DOCTYPE html>
+<html lang='pt-BR'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Controle de Estoque Pro</title>
+<style>:root{--primary:#2563eb;--primary-hover:#1d4ed8;--bg:#f1f5f9;--card-bg:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--danger:#ef4444;--danger-hover:#dc2626;--warning:#f59e0b;--warning-bg:#fffbeb;--success:#10b981;--success-bg:#ecfdf5;--info:#3b82f6;--info-bg:#eff6ff;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);--radius:10px;--transition:.2s ease}*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}body{background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}body.dark{--bg:#0f172a;--card-bg:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--border:#334155}.container{max-width:1280px;margin:0 auto;padding:16px}header{display:flex;justify-content:space-between;align-items:center;background:var(--card-bg);padding:16px 24px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:20px;flex-wrap:wrap;gap:12px;border:1px solid var(--border)}header h1{font-size:1.4rem;display:flex;align-items:center;gap:8px}header small{color:var(--muted);font-size:.8rem}.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-info{display:flex;align-items:center;gap:8px;font-size:.85rem}.badge{padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.5px}.badge-danger{background:var(--danger)}.badge-success{background:var(--success)}.badge-warning{background:var(--warning);color:#000}.badge-info{background:var(--info)}.btn{padding:8px 16px;border:none;border-radius:6px;font-weight:600;cursor:pointer;transition:all var(--transition);font-size:.9rem;display:inline-flex;align-items:center;gap:6px}.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-hover)}.btn-secondary{background:#64748b;color:#fff}.btn-secondary:hover{background:#475569}.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{background:var(--danger-hover)}.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-outline:hover{background:var(--bg)}.btn-sm{padding:5px 10px;font-size:.8rem}.btn:disabled{opacity:.5;cursor:not-allowed}.nav-tabs{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px}.tab-btn{padding:10px 18px;border:none;background:var(--card-bg);cursor:pointer;font-weight:600;color:var(--muted);border-radius:var(--radius);white-space:nowrap;transition:all var(--transition);border:1px solid var(--border);font-size:.85rem}.tab-btn:hover{color:var(--primary)}.tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:var(--shadow)}.tab-content{display:none;animation:fadeIn .3s ease}.tab-content.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.card{background:var(--card-bg);border-radius:var(--radius);border:1px solid var(--border);padding:20px;margin-bottom:20px;box-shadow:var(--shadow)}.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}.card-title{font-size:1.1rem;font-weight:700}.card-subtitle{font-size:.85rem;color:var(--muted);margin-top:4px}.grid{display:grid;gap:16px}.grid-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.grid-3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.grid-2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}.kpi-card{padding:20px;border-radius:var(--radius);border:1px solid var(--border);background:var(--card-bg);position:relative;overflow:hidden}.kpi-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%}.kpi-card.primary::before{background:var(--primary)}.kpi-card.success::before{background:var(--success)}.kpi-card.warning::before{background:var(--warning)}.kpi-card.danger::before{background:var(--danger)}.kpi-value{font-size:1.8rem;font-weight:800;margin:8px 0}.kpi-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}.kpi-change{font-size:.8rem;margin-top:4px}.kpi-change.up{color:var(--success)}.kpi-change.down{color:var(--danger)}table{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px;font-size:.9rem}th,td{padding:12px 14px;text-align:left}th{background:#f8fafc;font-size:.75rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:2}body.dark th{background:#1e293b}td{border-bottom:1px solid var(--border)}tr:hover td{background:rgba(37,99,235,.03)}body.dark tr:hover td{background:rgba(59,130,246,.08)}.form-group{margin-bottom:14px}label{display:block;margin-bottom:5px;font-weight:600;font-size:.85rem;color:var(--muted)}input,select,textarea{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;background:var(--card-bg);color:var(--text);transition:border-color var(--transition)}input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}textarea{min-height:80px;resize:vertical}.input-group{display:flex;gap:8px}.input-group input,.input-group select{flex:1}.search-box{position:relative}.search-box input{padding-left:38px}.search-box::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.5}.filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}.filters select,.filters input{min-width:160px}.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}.status-ok{background:var(--success)}.status-low{background:var(--warning)}.status-critical{background:var(--danger)}.toast-container{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;max-width:360px}.toast{background:var(--card-bg);border-radius:var(--radius);padding:14px 18px;box-shadow:var(--shadow-lg);border-left:4px solid var(--primary);animation:slideIn .3s ease;display:flex;align-items:flex-start;gap:10px;font-size:.9rem}.toast.success{border-color:var(--success)}.toast.error{border-color:var(--danger)}.toast.warning{border-color:var(--warning)}@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center;z-index:1000;backdrop-filter:blur(4px)}.modal.active{display:flex}.modal-content{background:var(--card-bg);border-radius:var(--radius);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);border:1px solid var(--border);animation:modalIn .25s ease}.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-body{padding:20px 24px}.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}@keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.close-btn{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1}.close-btn:hover{color:var(--text)}.chart-container{position:relative;height:260px;margin-top:16px}.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:16px;font-size:.85rem}.pagination button{padding:6px 12px;border:1px solid var(--border);background:var(--card-bg);border-radius:6px;cursor:pointer;color:var(--text)}.pagination button:hover{background:var(--bg)}.pagination button:disabled{opacity:.4;cursor:not-allowed}.pagination .active{background:var(--primary);color:#fff;border-color:var(--primary)}.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}.empty-state-icon{font-size:3rem;margin-bottom:12px;opacity:.5}.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600;background:#e2e8f0;color:#475569;margin-right:4px}.tag-cat-1{background:#dbeafe;color:#1e40af}.tag-cat-2{background:#dcfce7;color:#166534}.tag-cat-3{background:#fef3c7;color:#92400e}.tag-cat-4{background:#fce7f3;color:#9d174d}.tag-cat-5{background:#f3e8ff;color:#6b21a8}.progress-bar{height:6px;border-radius:3px;background:var(--border);overflow:hidden;margin-top:6px}.progress-bar-fill{height:100%;border-radius:3px;transition:width .3s ease}.progress-low{background:var(--danger)}.progress-medium{background:var(--warning)}.progress-high{background:var(--success)}.action-btns{display:flex;gap:6px}.action-btns button{padding:5px 8px;font-size:.8rem}.tooltip{position:relative}.tooltip::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:4px 10px;border-radius:6px;font-size:.75rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;margin-bottom:6px}.tooltip:hover::after{opacity:1}.mobile-menu-btn{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text)}@media(max-width:768px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}.nav-tabs{gap:4px}.tab-btn{padding:8px 12px;font-size:.8rem}.mobile-menu-btn{display:block}.header-actions .btn span{display:none}th,td{padding:10px 8px;font-size:.85rem}.kpi-value{font-size:1.4rem}.modal-content{margin:16px;max-height:calc(100vh - 32px)}}.loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,.7);display:none;justify-content:center;align-items:center;z-index:9998;backdrop-filter:blur(2px)}body.dark .loading-overlay{background:rgba(15,23,42,.7)}.loading-overlay.active{display:flex}.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.print-only{display:none}@media print{.no-print{display:none!important}.print-only{display:block}.container{max-width:100%}.card{box-shadow:none;border:1px solid #ddd}body{background:#fff}}.log-entrada{color:var(--success);font-weight:600}.log-saida{color:var(--danger);font-weight:600}.log-cadastro{color:var(--primary);font-weight:600}.log-edicao{color:var(--warning);font-weight:600}.log-exclusao{color:var(--danger);font-weight:600}.log-ajuste{color:var(--info);font-weight:600}.section-divider{margin:24px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--border);font-size:.9rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px}.toggle-switch{position:relative;display:inline-block;width:44px;height:24px}.toggle-switch input{opacity:0;width:0;height:0}.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:24px;transition:.3s}.toggle-slider::before{position:absolute;content:'';height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}input:checked+.toggle-slider{background:var(--primary)}input:checked+.toggle-slider::before{transform:translateX(20px)}.dark-toggle{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}.export-btns{display:flex;gap:8px;flex-wrap:wrap}.export-btns button{font-size:.8rem}.quick-actions{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}.quick-actions .btn{font-size:.85rem}.stock-visual{display:flex;align-items:center;gap:8px;font-size:.85rem}.stock-bar-bg{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;min-width:60px}.stock-bar-fill{height:100%;border-radius:4px;transition:width .3s ease}.stock-bar-fill.critical{background:var(--danger)}.stock-bar-fill.low{background:var(--warning)}.stock-bar-fill.ok{background:var(--success)}.stock-text{min-width:40px;text-align:right;font-weight:600;font-size:.8rem}.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.9rem}.info-row:last-child{border-bottom:none}.info-label{color:var(--muted);font-size:.85rem}.info-value{font-weight:600}.product-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:600px){.product-detail-grid{grid-template-columns:1fr}}.history-timeline{position:relative;padding-left:24px}.history-timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border)}.timeline-item{position:relative;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}.timeline-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}.timeline-dot{position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--primary);border:2px solid var(--card-bg)}.timeline-date{font-size:.75rem;color:var(--muted);margin-bottom:4px}.timeline-content{font-size:.9rem}.timeline-qtd{font-weight:700}.confirm-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);display:none;justify-content:center;align-items:center;z-index:2000;backdrop-filter:blur(3px)}.confirm-overlay.active{display:flex}.confirm-box{background:var(--card-bg);border-radius:var(--radius);padding:24px;max-width:400px;width:90%;box-shadow:var(--shadow-lg);border:1px solid var(--border);text-align:center}.confirm-box h3{margin-bottom:8px}.confirm-box p{color:var(--muted);margin-bottom:20px;font-size:.9rem}.confirm-btns{display:flex;gap:10px;justify-content:center}.undo-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:12px 24px;border-radius:var(--radius);display:none;align-items:center;gap:12px;z-index:9997;box-shadow:var(--shadow-lg);font-size:.9rem}.undo-bar.active{display:flex}.undo-bar button{background:var(--primary);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-weight:600}.undo-bar button:hover{background:var(--primary-hover)}
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class='loading-overlay' id='loadingOverlay'>
+<div class='spinner'>
+</div>
+</div>
+<div class='toast-container' id='toastContainer'>
+</div>
+<div class='undo-bar' id='undoBar'>
+<span id='undoText'>Acao desfeita</span>
+<button onclick='executarDesfazer()'>Desfazer</button>
+</div>
+<div class='confirm-overlay' id='confirmOverlay'>
+<div class='confirm-box'>
+<h3 id='confirmTitle'>Confirmar?</h3>
+<p id='confirmText'>Tem certeza que deseja prosseguir?</p>
+<div class='confirm-btns'>
+<button class='btn btn-secondary' onclick='fecharConfirmacao()'>Cancelar</button>
+<button class='btn btn-danger' id='confirmBtn' onclick=''>Confirmar</button>
+</div>
+</div>
+</div>
+<div class='modal' id='loginModal'>
+<div class='modal-content'>
+<div class='modal-header'>
+<h2>Controle de Estoque Pro</h2>
+</div>
+<div class='modal-body'>
+<div class='form-group'>
+<label>Nome do Usuario</label>
+<input type='text' id='loginNome' placeholder='Seu nome ou setor'>
+</div>
+<div class='form-group'>
+<label>Tipo de Acesso</label>
+<select id='loginPerfil'>
+<option value='consulta'>Apenas Consulta / Leitura</option>
+<option value='operador'>Operador (Movimentacoes)</option>
+<option value='admin'>Administrador Total</option>
+</select>
+</div>
+<div class='form-group' id='groupSenha' style='display:none'>
+<label>Senha</label>
+<input type='password' id='loginSenha' placeholder='Senha de acesso'>
+</div>
+<div class='form-group' id='groupConfig' style='display:none'>
+<label style='color:var(--danger);font-size:.8rem'>Primeiro acesso? Configure a senha de admin abaixo.</label>
+<input type='password' id='configSenha' placeholder='Nova senha de administrador'>
+</div>
+</div>
+<div class='modal-footer' style='flex-direction:column;gap:10px'>
+<button class='btn btn-primary' style='width:100%' onclick='autenticar()'>Entrar no Sistema</button>
+<button class='btn btn-outline' style='width:100%' onclick='acessarComoVisitante()'>Acessar como Visitante (Apenas Consulta)</button>
+</div>
+</div>
+</div>
+<div class='modal' id='modalProduto'>
+<div class='modal-content'>
+<div class='modal-header'>
+<h3 id='modalProdutoTitulo'>Detalhes do Produto</h3>
+<button class='close-btn' onclick='fecharModalProduto()'>&times;</button>
+</div>
+<div class='modal-body' id='modalProdutoBody'>
+</div>
+<div class='modal-footer'>
+<button class='btn btn-secondary' onclick='fecharModalProduto()'>Fechar</button>
+</div>
+</div>
+</div>
+<div class='modal' id='modalEditar'>
+<div class='modal-content'>
+<div class='modal-header'>
+<h3>Editar Produto</h3>
+<button class='close-btn' onclick='fecharModalEditar()'>&times;</button>
+</div>
+<div class='modal-body'>
+<form id='formEditar' onsubmit='salvarEdicao(event)'>
+<input type='hidden' id='editId'>
+<div class='form-group'>
+<label>Nome do Produto *</label>
+<input type='text' id='editNome' required>
+</div>
+<div class='form-group'>
+<label>Categoria</label>
+<select id='editCategoria'>
+<option value=''>Sem categoria</option>
+</select>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Unidade *</label>
+<input type='text' id='editUnidade' placeholder='UN, CX, KG, L' required>
+</div>
+<div class='form-group'>
+<label>Fornecedor</label>
+<input type='text' id='editFornecedor' placeholder='Nome do fornecedor'>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Estoque Minimo *</label>
+<input type='number' id='editMin' min='0' step='any' required>
+</div>
+<div class='form-group'>
+<label>Estoque Maximo *</label>
+<input type='number' id='editMax' min='0' step='any' required>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Preco de Custo (R$)</label>
+<input type='number' id='editCusto' min='0' step='0.01' placeholder='0,00'>
+</div>
+<div class='form-group'>
+<label>Preco de Venda (R$)</label>
+<input type='number' id='editVenda' min='0' step='0.01' placeholder='0,00'>
+</div>
+</div>
+<div class='form-group'>
+<label>Localizacao no Almoxarifado</label>
+<input type='text' id='editLocal' placeholder='Prateleira A, Corredor 3'>
+</div>
+<div class='form-group'>
+<label>Observacoes</label>
+<textarea id='editObs' placeholder='Informacoes adicionais sobre o produto'></textarea>
+</div>
+</form>
+</div>
+<div class='modal-footer'>
+<button class='btn btn-secondary' onclick='fecharModalEditar()'>Cancelar</button>
+<button class='btn btn-primary' onclick="document.getElementById('formEditar').requestSubmit()">Salvar Alteracoes</button>
+</div>
+</div>
+</div>
+<div class='modal' id='modalInventario'>
+<div class='modal-content'>
+<div class='modal-header'>
+<h3>Ajuste de Inventario</h3>
+<button class='close-btn' onclick='fecharModalInventario()'>&times;</button>
+</div>
+<div class='modal-body'>
+<form id='formInventario' onsubmit='salvarInventario(event)'>
+<input type='hidden' id='invProdId'>
+<div class='form-group'>
+<label>Produto</label>
+<input type='text' id='invProdNome' readonly style='background:var(--bg);font-weight:600'>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Saldo Atual</label>
+<input type='number' id='invSaldoAtual' readonly style='background:var(--bg)'>
+</div>
+<div class='form-group'>
+<label>Novo Saldo *</label>
+<input type='number' id='invNovoSaldo' min='0' step='any' required>
+</div>
+</div>
+<div class='form-group'>
+<label>Motivo do Ajuste *</label>
+<select id='invMotivo' required>
+<option value=''>Selecione...</option>
+<option value='contagem_fisica'>Contagem Fisica</option>
+<option value='perda'>Perda / Quebra</option>
+<option value='vencimento'>Vencimento / Validade</option>
+<option value='doacao'>Doacao</option>
+<option value='ajuste'>Ajuste Diverso</option>
+</select>
+</div>
+<div class='form-group'>
+<label>Observacao</label>
+<textarea id='invObs' placeholder='Detalhes do ajuste'></textarea>
+</div>
+</form>
+</div>
+<div class='modal-footer'>
+<button class='btn btn-secondary' onclick='fecharModalInventario()'>Cancelar</button>
+<button class='btn btn-primary' onclick="document.getElementById('formInventario').requestSubmit()">Confirmar Ajuste</button>
+</div>
+</div>
+</div>
+<div class='modal' id='modalMovProduto'>
+<div class='modal-content' style='max-width:700px'>
+<div class='modal-header'>
+<h3>Historico de Movimentacoes</h3>
+<button class='close-btn' onclick='fecharModalMovProduto()'>&times;</button>
+</div>
+<div class='modal-body' id='modalMovProdutoBody'>
+</div>
+<div class='modal-footer'>
+<button class='btn btn-secondary' onclick='fecharModalMovProduto()'>Fechar</button>
+</div>
+</div>
+</div>
+<div class='modal' id='modalEditarCategoriaMassa'>
+<div class='modal-content' style='max-width:700px'>
+<div class='modal-header'>
+<h3>Editar Categoria em Massa</h3>
+<button class='close-btn' onclick='fecharModalEditarCategoriaMassa()'>&times;</button>
+</div>
+<div class='modal-body'>
+<div class='form-group'>
+<label>Selecione os produtos</label>
+<div id='listaProdutosCategoriaMassa' style='max-height:300px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg)'>
+</div>
+</div>
+<div class='form-group' style='margin-top:16px'>
+<label>Nova Categoria</label>
+<select id='novaCatMassa'>
+<option value=''>Sem categoria</option>
+</select>
+</div>
+<div class='quick-actions'>
+<button class='btn btn-sm btn-outline' onclick='marcarTodosCatMassa(true)'>Marcar Todos</button>
+<button class='btn btn-sm btn-outline' onclick='marcarTodosCatMassa(false)'>Desmarcar Todos</button>
+</div>
+</div>
+<div class='modal-footer'>
+<button class='btn btn-secondary' onclick='fecharModalEditarCategoriaMassa()'>Cancelar</button>
+<button class='btn btn-primary' onclick='salvarCategoriaMassa()'>Aplicar a Todos Selecionados</button>
+</div>
+</div>
+</div>
+
+<div class='container'>
+<header>
+<div>
+<h1>Controle de Estoque Pro</h1>
+<small id='syncStatus'>Sincronizado via JSONBin.io | v2.0</small>
+</div>
+<div class='header-actions'>
+<div class='dark-toggle'>
+<span>Dark</span>
+<label class='toggle-switch'>
+<input type='checkbox' id='darkToggle' onchange='toggleDark()'>
+<span class='toggle-slider'>
+</span>
+</label>
+</div>
+<div class='user-info'>
+<span id='txtUsuario'>Visitante</span>
+<span id='badgePerfil' class='badge badge-success'>Consulta</span>
+</div>
+<button class='btn btn-secondary btn-sm' onclick='sair()'>
+<span>Sair</span>🚪</button>
+</div>
+</header>
+<div class='nav-tabs' id='navTabs'>
+<button class='tab-btn active' onclick="mudarAba('dashboard',this)">Dashboard</button>
+<button class='tab-btn' onclick="mudarAba('estoque',this)">Estoque</button>
+<button class='tab-btn' onclick="mudarAba('movimentar',this)">Movimentar</button>
+<button class='tab-btn' onclick="mudarAba('compras',this)">Compras</button>
+<button class='tab-btn' onclick="mudarAba('relatorios',this)">Relatorios</button>
+<button class='tab-btn' onclick="mudarAba('logs',this)">Logs</button>
+<button class='tab-btn admin-only' onclick="mudarAba('cadastrar',this)" style='display:none'>Cadastrar</button>
+<button class='tab-btn admin-only' onclick="mudarAba('config',this)" style='display:none'>Config</button>
+</div>
+<div id='abaDashboard' class='tab-content active'>
+<div class='grid grid-4'>
+<div class='kpi-card primary'>
+<div class='kpi-label'>Total de Produtos</div>
+<div class='kpi-value' id='kpiTotal'>0</div>
+<div class='kpi-change' id='kpiTotalChange'>--</div>
+</div>
+<div class='kpi-card warning'>
+<div class='kpi-label'>Itens em Alerta</div>
+<div class='kpi-value' id='kpiAlerta'>0</div>
+<div class='kpi-change' id='kpiAlertaChange'>--</div>
+</div>
+<div class='kpi-card success'>
+<div class='kpi-label'>Valor do Estoque</div>
+<div class='kpi-value' id='kpiValor'>R$ 0,00</div>
+<div class='kpi-change' id='kpiValorChange'>--</div>
+</div>
+<div class='kpi-card danger'>
+<div class='kpi-label'>Mov. Hoje</div>
+<div class='kpi-value' id='kpiMovHoje'>0</div>
+<div class='kpi-change' id='kpiMovHojeChange'>--</div>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Estoque por Categoria</div>
+<div class='card-subtitle'>Distribuicao dos produtos</div>
+</div>
+</div>
+<div id='chartCategorias' style='height:220px;display:flex;align-items:center;justify-content:center;color:var(--muted)'>Carregando...</div>
+</div>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Movimentacoes dos Ultimos 7 Dias</div>
+<div class='card-subtitle'>Entradas e saidas</div>
+</div>
+</div>
+<div id='chartMovimentacoes' style='height:220px;display:flex;align-items:center;justify-content:center;color:var(--muted)'>Carregando...</div>
+</div>
+</div>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Produtos com Estoque Critico</div>
+<div class='card-subtitle'>Saldo abaixo ou igual ao minimo</div>
+</div>
+<button class='btn btn-primary btn-sm' onclick="mudarAba('compras',document.querySelectorAll('.tab-btn')[3])">Ver Lista Completa</button>
+</div>
+<table>
+<thead>
+<tr>
+<th>Produto</th>
+<th>Categoria</th>
+<th>Saldo</th>
+<th>Minimo</th>
+<th>Sugestao</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id='tbDashboardCritico'>
+</tbody>
+</table>
+</div>
+</div>
+<div id='abaEstoque' class='tab-content'>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Estoque Atual</div>
+<div class='card-subtitle'>Gerencie todos os produtos cadastrados</div>
+</div>
+<div class='export-btns no-print'>
+<button class='btn btn-outline btn-sm' onclick='exportarCSV()'>CSV</button>
+<button class='btn btn-outline btn-sm' onclick='exportarJSON()'>JSON</button>
+<button class='btn btn-outline btn-sm' onclick='window.print()'>Imprimir</button>
+<button class='btn btn-primary btn-sm admin-only' onclick='abrirModalEditarCategoriaMassa()' style='display:none'>Editar Categoria em Massa</button>
+</div>
+</div>
+<div class='filters'>
+<div class='search-box' style='flex:1;min-width:200px'>
+<input type='text' id='buscaProduto' placeholder='Buscar por nome, codigo ou localizacao...' oninput='renderizarTabelaEstoque()'>
+</div>
+<select id='filtroCategoria' onchange='renderizarTabelaEstoque()'>
+<option value=''>Todas Categorias</option>
+</select>
+<select id='filtroStatus' onchange='renderizarTabelaEstoque()'>
+<option value=''>Todos Status</option>
+<option value='ok'>OK</option>
+<option value='alerta'>Alerta</option>
+<option value='critico'>Critico</option>
+</select>
+<select id='filtroOrdenar' onchange='renderizarTabelaEstoque()'>
+<option value='nome'>Ordenar: Nome</option>
+<option value='saldo_asc'>Saldo: Menor -> Maior</option>
+<option value='saldo_desc'>Saldo: Maior -> Menor</option>
+<option value='custo_desc'>Maior Valor</option>
+<option value='ultima_mov'>Ultima Movimentacao</option>
+</select>
+</div>
+<div style='overflow-x:auto'>
+<table>
+<thead>
+<tr>
+<th>Produto</th>
+<th>Categoria</th>
+<th>Unid.</th>
+<th>Min</th>
+<th>Max</th>
+<th>Saldo</th>
+<th>% Estoque</th>
+<th>Custo Unit.</th>
+<th>Valor Total</th>
+<th>Status</th>
+<th class='no-print'>Acoes</th>
+</tr>
+</thead>
+<tbody id='tbEstoque'>
+</tbody>
+</table>
+</div>
+<div class='pagination' id='paginacaoEstoque'>
+</div>
+</div>
+</div>
+<div id='abaMovimentar' class='tab-content'>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Registrar Movimentacao</div>
+<div class='card-subtitle'>Entrada ou saida de produtos</div>
+</div>
+</div>
+<div id='msgMovRestrito' class='no-print' style='display:none;padding:12px 16px;background:var(--warning-bg);border-radius:8px;color:#92400e;margin-bottom:16px;border-left:4px solid var(--warning)'>
+<strong>Modo Consulta:</strong> Voce nao pode registrar movimentacoes. Entre como Operador ou Admin.
+</div>
+<form id='formMovimentar' onsubmit='salvarMovimentacao(event)'>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Produto *</label>
+<select id='movProdutoId' required onchange='atualizarInfoProdutoMov()'>
+<option value=''>Selecione...</option>
+</select>
+</div>
+<div class='form-group'>
+<label>Tipo *</label>
+<select id='movTipo' required>
+<option value='ENTRADA'>Entrada (+)</option>
+<option value='SAIDA'>Saida (-)</option>
+<option value='DEVOLUCAO'>Devolucao (+)</option>
+</select>
+</div>
+</div>
+<div id='infoProdutoMov' style='display:none;background:var(--bg);padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:.9rem'>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Quantidade *</label>
+<input type='number' id='movQtd' min='0.01' step='any' required>
+</div>
+<div class='form-group'>
+<label>Numero da NF / Documento</label>
+<input type='text' id='movNF' placeholder='Nota fiscal, OS, etc.'>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Destino / Origem</label>
+<input type='text' id='movDestino' placeholder='Setor UTI, Almoxarifado, etc.'>
+</div>
+<div class='form-group'>
+<label>Responsavel</label>
+<input type='text' id='movResp' placeholder='Nome do responsavel'>
+</div>
+</div>
+<div class='form-group'>
+<label>Observacao</label>
+<textarea id='movObs' placeholder='Detalhes adicionais'></textarea>
+</div>
+<div class='quick-actions no-print'>
+<button type='submit' id='btnSalvarMov' class='btn btn-primary'>Confirmar Registro</button>
+<button type='button' class='btn btn-outline' onclick="document.getElementById('formMovimentar').reset();document.getElementById('infoProdutoMov').style.display='none'">Limpar</button>
+</div>
+</form>
+</div>
+<div class='card no-print'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Ultimas Movimentacoes</div>
+<div class='card-subtitle'>Registros recentes do sistema</div>
+</div>
+</div>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Produto</th>
+<th>Tipo</th>
+<th>Qtd</th>
+<th>Destino/Origem</th>
+<th>Usuario</th>
+</tr>
+</thead>
+<tbody id='tbMovRecentes'>
+</tbody>
+</table>
+</div>
+</div>
+<div id='abaCompras' class='tab-content'>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Lista de Compras Sugerida</div>
+<div class='card-subtitle'>Produtos abaixo do estoque minimo</div>
+</div>
+<div class='export-btns no-print'>
+<button class='btn btn-outline btn-sm' onclick='exportarListaComprasCSV()'>Exportar CSV</button>
+<button class='btn btn-outline btn-sm' onclick='window.print()'>Imprimir / PDF</button>
+</div>
+</div>
+<div class='filters no-print'>
+<select id='filtroCompraCat' onchange='renderizarListaCompras()'>
+<option value=''>Todas Categorias</option>
+</select>
+<select id='filtroCompraOrdem' onchange='renderizarListaCompras()'>
+<option value='prioridade'>Ordenar: Prioridade</option>
+<option value='nome'>Nome</option>
+<option value='valor'>Maior Valor</option>
+</select>
+</div>
+<table>
+<thead>
+<tr>
+<th>Produto</th>
+<th>Categoria</th>
+<th>Saldo Atual</th>
+<th>Minimo</th>
+<th>Maximo</th>
+<th>Qtd. Sugerida</th>
+<th>Custo Est. (R$)</th>
+<th>Fornecedor</th>
+</tr>
+</thead>
+<tbody id='tbCompras'>
+</tbody>
+</table>
+<div class='card' style='margin-top:16px;background:var(--success-bg);border-color:var(--success)'>
+<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px'>
+<span style='font-weight:700;color:#166534'>Valor Total Estimado da Compra:</span>
+<span id='totalCompra' style='font-size:1.3rem;font-weight:800;color:#166534'>R$ 0,00</span>
+</div>
+</div>
+</div>
+</div>
+<div id='abaRelatorios' class='tab-content'>
+<div class='grid grid-2'>
+<div class='card'>
+<div class='card-header'>
+<div class='card-title'>Curva ABC (Valor do Estoque)</div>
+</div>
+<div id='chartABC' style='height:240px;display:flex;align-items:center;justify-content:center;color:var(--muted)'>Carregando...</div>
+</div>
+<div class='card'>
+<div class='card-header'>
+<div class='card-title'>Movimentacao por Periodo</div>
+</div>
+<div class='form-group no-print'>
+<label>Filtrar por Periodo</label>
+<select id='relPeriodo' onchange='renderizarRelatorios()'>
+<option value='7'>Ultimos 7 dias</option>
+<option value='30'>Ultimos 30 dias</option>
+<option value='90'>Ultimos 90 dias</option>
+<option value='365'>Ultimo ano</option>
+</select>
+</div>
+<div id='chartPeriodo' style='height:200px;display:flex;align-items:center;justify-content:center;color:var(--muted)'>Carregando...</div>
+</div>
+</div>
+<div class='card'>
+<div class='card-header'>
+<div class='card-title'>Ranking de Produtos - Maior Movimentacao</div>
+</div>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Produto</th>
+<th>Entradas</th>
+<th>Saidas</th>
+<th>Saldo Atual</th>
+<th>Valor em Estoque</th>
+</tr>
+</thead>
+<tbody id='tbRanking'>
+</tbody>
+</table>
+</div>
+</div>
+<div id='abaLogs' class='tab-content'>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Historico de Atividades</div>
+<div class='card-subtitle'>Todas as acoes realizadas no sistema</div>
+</div>
+<div class='export-btns no-print'>
+<button class='btn btn-outline btn-sm' onclick='limparLogs()'>Limpar Logs Antigos</button>
+</div>
+</div>
+<div class='filters no-print'>
+<div class='search-box' style='flex:1;min-width:200px'>
+<input type='text' id='buscaLog' placeholder='Buscar nos logs...' oninput='renderizarLogs()'>
+</div>
+<select id='filtroLogAcao' onchange='renderizarLogs()'>
+<option value=''>Todas Acoes</option>
+<option value='ENTRADA'>Entradas</option>
+<option value='SAIDA'>Saidas</option>
+<option value='CADASTRO'>Cadastros</option>
+<option value='EDICAO'>Edicoes</option>
+<option value='EXCLUSAO'>Exclusoes</option>
+<option value='AJUSTE'>Ajustes</option>
+</select>
+<select id='filtroLogUsuario' onchange='renderizarLogs()'>
+<option value=''>Todos Usuarios</option>
+</select>
+</div>
+<table>
+<thead>
+<tr>
+<th>Data/Hora</th>
+<th>Usuario</th>
+<th>Acao</th>
+<th>Detalhes</th>
+</tr>
+</thead>
+<tbody id='tbLogs'>
+</tbody>
+</table>
+<div class='pagination' id='paginacaoLogs'>
+</div>
+</div>
+</div>
+<div id='abaCadastrar' class='tab-content'>
+<div class='card'>
+<div class='card-header'>
+<div>
+<div class='card-title'>Cadastrar Novo Produto</div>
+<div class='card-subtitle'>Preencha todos os campos obrigatorios</div>
+</div>
+</div>
+<form id='formCadastrar' onsubmit='salvarNovoProduto(event)'>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Nome do Produto *</label>
+<input type='text' id='cadNome' required>
+</div>
+<div class='form-group'>
+<label>Categoria</label>
+<select id='cadCategoria'>
+<option value=''>Sem categoria</option>
+</select>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Unidade de Medida *</label>
+<input type='text' id='cadUnidade' placeholder='UN, CX, KG, L, Frasco' required>
+</div>
+<div class='form-group'>
+<label>Fornecedor</label>
+<input type='text' id='cadFornecedor' placeholder='Nome do fornecedor padrao'>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Estoque Minimo *</label>
+<input type='number' id='cadMin' min='0' step='any' required>
+</div>
+<div class='form-group'>
+<label>Estoque Maximo *</label>
+<input type='number' id='cadMax' min='0' step='any' required>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Preco de Custo (R$)</label>
+<input type='number' id='cadCusto' min='0' step='0.01' placeholder='0,00'>
+</div>
+<div class='form-group'>
+<label>Preco de Venda (R$)</label>
+<input type='number' id='cadVenda' min='0' step='0.01' placeholder='0,00'>
+</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Saldo Inicial *</label>
+<input type='number' id='cadSaldo' value='0' min='0' step='any' required>
+</div>
+<div class='form-group'>
+<label>Localizacao</label>
+<input type='text' id='cadLocal' placeholder='Prateleira, corredor, etc.'>
+</div>
+</div>
+<div class='form-group'>
+<label>Observacoes</label>
+<textarea id='cadObs' placeholder='Informacoes adicionais'></textarea>
+</div>
+<div class='quick-actions no-print'>
+<button type='submit' class='btn btn-primary'>Salvar Produto</button>
+<button type='button' class='btn btn-outline' onclick="document.getElementById('formCadastrar').reset()">Limpar</button>
+</div>
+</form>
+</div>
+</div>
+<div id='abaConfig' class='tab-content'>
+<div class='grid grid-2'>
+<div class='card'>
+<div class='card-header'>
+<div class='card-title'>Categorias</div>
+</div>
+<div class='form-group'>
+<label>Adicionar Nova Categoria</label>
+<div class='input-group'>
+<input type='text' id='novaCategoria' placeholder='Nome da categoria'>
+<button class='btn btn-primary' onclick='adicionarCategoria()'>Adicionar</button>
+</div>
+</div>
+<div id='listaCategorias' style='margin-top:12px'>
+</div>
+</div>
+<div class='card'>
+<div class='card-header'>
+<div class='card-title'>Backup e Restauracao</div>
+</div>
+<div class='form-group'>
+<label>Exportar Backup (JSON)</label>
+<p style='font-size:.85rem;color:var(--muted);margin-bottom:10px'>Baixe uma copia completa dos dados para backup local.</p>
+<button class='btn btn-primary' onclick='exportarBackup()'>Download Backup JSON</button>
+</div>
+<div class='section-divider'>Restaurar de Arquivo</div>
+<div class='form-group'>
+<label>Selecionar arquivo de backup</label>
+<input type='file' id='fileBackup' accept='.json' onchange='importarBackup(this)'>
+</div>
+<div class='section-divider'>Sincronizacao com Nuvem</div>
+<button class='btn btn-primary' onclick='enviarDadosParaNuvem()' style='margin-bottom:8px'>Enviar Dados Atuais para Nuvem</button>
+<button class='btn btn-secondary' onclick='carregarDadosDoCloud(true)' style='margin-bottom:8px'>Recarregar da Nuvem</button>
+<button class='btn btn-outline' onclick='recarregarDadosLocais()'>Restaurar Dados Locais Iniciais</button>
+</div>
+</div>
+<div class='card'>
+<div class='card-header'>
+<div class='card-title'>Configuracoes do Sistema</div>
+</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Alterar Senha de Admin</label>
+<input type='password' id='novaSenhaAdmin' placeholder='Nova senha'>
+</div>
+<div class='form-group'>
+<label>Confirmar Nova Senha</label>
+<input type='password' id='confSenhaAdmin' placeholder='Repita a senha'>
+</div>
+</div>
+<button class='btn btn-primary' onclick='alterarSenhaAdmin()'>Atualizar Senha</button>
+<div class='section-divider' style='color:var(--danger)'>Seguranca</div>
+<p style='font-size:.8rem;color:var(--muted);margin-bottom:10px'>
+<strong>Aviso:</strong> Este sistema roda 100% no navegador. A senha de admin fica visivel no codigo-fonte (F12) e no localStorage do navegador. 
+Ela serve apenas para evitar alteracoes acidentais, nao como seguranca real. Nao use senhas importantes aqui.
+</p>
+<div class='section-divider'>Dados da API JSONBin</div>
+<div class='grid grid-2'>
+<div class='form-group'>
+<label>Bin ID</label>
+<input type='text' id='configBinId' placeholder='SEU_BIN_ID'>
+</div>
+<div class='form-group'>
+<label>Master Key</label>
+<input type='password' id='configMasterKey' placeholder='SUA_MASTER_KEY'>
+</div>
+</div>
+<button class='btn btn-secondary' onclick='salvarConfigAPI()'>Salvar Configuracao da API</button>
+</div>
+</div>
+</div>
+
+<script>
+const JSONBIN_BIN_ID=localStorage.getItem('jsonbin_bin_id')||'SEU_BIN_ID_AQUI';
+const JSONBIN_MASTER_KEY=localStorage.getItem('jsonbin_master_key')||'SUA_MASTER_KEY_AQUI';
+let SENHA_ADMIN=localStorage.getItem('estoque_senha_admin')||'admin123';
+const DADOS_INICIAIS={
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Abaixador de lingua",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 5
+    },
+    {
+      "id": 2,
+      "nome": "Abocath 18",
+      "unidade": "UN",
+      "estoque_min": 100,
+      "estoque_max": 457,
+      "saldo_atual": 305
+    },
+    {
+      "id": 3,
+      "nome": "Abocath 20",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1200,
+      "saldo_atual": -53
+    },
+    {
+      "id": 4,
+      "nome": "Abocath 22",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1200,
+      "saldo_atual": 43
+    },
+    {
+      "id": 5,
+      "nome": "Abocath 24",
+      "unidade": "UN",
+      "estoque_min": 150,
+      "estoque_max": 450,
+      "saldo_atual": 155
+    },
+    {
+      "id": 6,
+      "nome": "Absorvente - UNIDADE",
+      "unidade": "UN",
+      "estoque_min": 16,
+      "estoque_max": 48,
+      "saldo_atual": -32
+    },
+    {
+      "id": 7,
+      "nome": "Adenosina 6mg/2ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 8,
+      "nome": "Adrenalina",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 117,
+      "saldo_atual": 78
+    },
+    {
+      "id": 9,
+      "nome": "Agua destilada",
+      "unidade": "UN",
+      "estoque_min": 20,
+      "estoque_max": 96,
+      "saldo_atual": 64
+    },
+    {
+      "id": 10,
+      "nome": "Agua oxigenada",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 1
+    },
+    {
+      "id": 11,
+      "nome": "Agulha 13x4,5",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1993,
+      "saldo_atual": 1329
+    },
+    {
+      "id": 12,
+      "nome": "Agulha 25x7",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1200,
+      "saldo_atual": 195
+    },
+    {
+      "id": 13,
+      "nome": "Agulha 40x08",
+      "unidade": "UN",
+      "estoque_min": 200,
+      "estoque_max": 600,
+      "saldo_atual": 204
+    },
+    {
+      "id": 14,
+      "nome": "Agulha 40x12",
+      "unidade": "UN",
+      "estoque_min": 600,
+      "estoque_max": 1800,
+      "saldo_atual": 746
+    },
+    {
+      "id": 15,
+      "nome": "Agulha raqui 22gx3,5",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -14
+    },
+    {
+      "id": 16,
+      "nome": "Agulha bx mama 16x10",
+      "unidade": "UN",
+      "estoque_min": 16,
+      "estoque_max": 48,
+      "saldo_atual": 11
+    },
+    {
+      "id": 17,
+      "nome": "Agulha bx 18x25",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 4
+    },
+    {
+      "id": 18,
+      "nome": "Agulha bx 14x10",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 3
+    },
+    {
+      "id": 19,
+      "nome": "Agulha bx 18x20",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 7
+    },
+    {
+      "id": 20,
+      "nome": "Agulha bx medula ossea 11x150",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 21,
+      "nome": "Alcool 70%",
+      "unidade": "UN",
+      "estoque_min": 12,
+      "estoque_max": 36,
+      "saldo_atual": 20
+    },
+    {
+      "id": 22,
+      "nome": "Alcool gel 5L",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 3
+    },
+    {
+      "id": 23,
+      "nome": "Algodão",
+      "unidade": "UN",
+      "estoque_min": 3,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 24,
+      "nome": "Aminofilina",
+      "unidade": "UN",
+      "estoque_min": 100,
+      "estoque_max": 300,
+      "saldo_atual": 28
+    },
+    {
+      "id": 25,
+      "nome": "Amiodarona 50mg/3ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 132,
+      "saldo_atual": 88
+    },
+    {
+      "id": 26,
+      "nome": "Aparelho presto barba",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": -4
+    },
+    {
+      "id": 27,
+      "nome": "Atadura",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 9
+    },
+    {
+      "id": 28,
+      "nome": "Atensina/clonidina",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 30,
+      "saldo_atual": 6
+    },
+    {
+      "id": 29,
+      "nome": "Atensina/clonidina cp",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 45,
+      "saldo_atual": 30
+    },
+    {
+      "id": 30,
+      "nome": "Atilho",
+      "unidade": "UN",
+      "estoque_min": 3,
+      "estoque_max": 10,
+      "saldo_atual": -2
+    },
+    {
+      "id": 31,
+      "nome": "Atropina 0,25mg/1ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 99,
+      "saldo_atual": 66
+    },
+    {
+      "id": 32,
+      "nome": "Avental descartável",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 90,
+      "saldo_atual": 60
+    },
+    {
+      "id": 33,
+      "nome": "Bateria LR44",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 12,
+      "saldo_atual": 8
+    },
+    {
+      "id": 34,
+      "nome": "Bicabornato de sódio 8,4% - 10ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 52,
+      "saldo_atual": 35
+    },
+    {
+      "id": 35,
+      "nome": "Biscoito doce",
+      "unidade": "UN",
+      "estoque_min": 80,
+      "estoque_max": 285,
+      "saldo_atual": 190
+    },
+    {
+      "id": 36,
+      "nome": "Biscoito salgado",
+      "unidade": "UN",
+      "estoque_min": 80,
+      "estoque_max": 292,
+      "saldo_atual": 195
+    },
+    {
+      "id": 37,
+      "nome": "Bom ar",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 30,
+      "saldo_atual": 9
+    },
+    {
+      "id": 38,
+      "nome": "Bombril",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 3
+    },
+    {
+      "id": 39,
+      "nome": "Buscopan 20mg/1ml ampola (butilescopolamina)",
+      "unidade": "UN",
+      "estoque_min": 100,
+      "estoque_max": 300,
+      "saldo_atual": -68
+    },
+    {
+      "id": 40,
+      "nome": "Butterfly 19",
+      "unidade": "UN",
+      "estoque_min": 100,
+      "estoque_max": 300,
+      "saldo_atual": 106
+    },
+    {
+      "id": 41,
+      "nome": "Butterfly 21",
+      "unidade": "UN",
+      "estoque_min": 300,
+      "estoque_max": 900,
+      "saldo_atual": 497
+    },
+    {
+      "id": 42,
+      "nome": "Butterfly 23",
+      "unidade": "UN",
+      "estoque_min": 300,
+      "estoque_max": 900,
+      "saldo_atual": 266
+    },
+    {
+      "id": 43,
+      "nome": "Butterfly 25",
+      "unidade": "UN",
+      "estoque_min": 150,
+      "estoque_max": 450,
+      "saldo_atual": 186
+    },
+    {
+      "id": 44,
+      "nome": "Butterfly 27",
+      "unidade": "UN",
+      "estoque_min": 150,
+      "estoque_max": 450,
+      "saldo_atual": 186
+    },
+    {
+      "id": 45,
+      "nome": "Caixa arquivo morto",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 30,
+      "saldo_atual": 12
+    },
+    {
+      "id": 46,
+      "nome": "Caixa coletora 1,5L (Descarpapack)",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 9
+    },
+    {
+      "id": 47,
+      "nome": "Caixa coletora 7L (Descarpapack)",
+      "unidade": "UN",
+      "estoque_min": 20,
+      "estoque_max": 60,
+      "saldo_atual": 17
+    },
+    {
+      "id": 48,
+      "nome": "Caixa coletora 13L (Descarpapack)",
+      "unidade": "UN",
+      "estoque_min": 20,
+      "estoque_max": 60,
+      "saldo_atual": 35
+    },
+    {
+      "id": 49,
+      "nome": "Caixa coletora 20L (Descarpapack)",
+      "unidade": "UN",
+      "estoque_min": 20,
+      "estoque_max": 60,
+      "saldo_atual": 0
+    },
+    {
+      "id": 50,
+      "nome": "Campo operatorio plástico",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 78
+    },
+    {
+      "id": 51,
+      "nome": "Caneta bic azul",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": -32
+    },
+    {
+      "id": 52,
+      "nome": "Caneta bic preta",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 2
+    },
+    {
+      "id": 53,
+      "nome": "Caneta bic vermelha",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 49,
+      "saldo_atual": 33
+    },
+    {
+      "id": 54,
+      "nome": "Caneta marca texto",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": -2
+    },
+    {
+      "id": 55,
+      "nome": "Capa p/ videocirurgia",
+      "unidade": "UN",
+      "estoque_min": 16,
+      "estoque_max": 115,
+      "saldo_atual": 77
+    },
+    {
+      "id": 56,
+      "nome": "Captopril cp",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -2
+    },
+    {
+      "id": 57,
+      "nome": "Cera Lumina 5L",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 3
+    },
+    {
+      "id": 58,
+      "nome": "Clips 2,0",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -2
+    },
+    {
+      "id": 59,
+      "nome": "Clips 8,0",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 4
+    },
+    {
+      "id": 60,
+      "nome": "Cloro 5L",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 2
+    },
+    {
+      "id": 61,
+      "nome": "Cola bastão",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": 4
+    },
+    {
+      "id": 62,
+      "nome": "Compressa",
+      "unidade": "UN",
+      "estoque_min": 250,
+      "estoque_max": 750,
+      "saldo_atual": 42
+    },
+    {
+      "id": 63,
+      "nome": "Copo",
+      "unidade": "UN",
+      "estoque_min": 5000,
+      "estoque_max": 15000,
+      "saldo_atual": -5700
+    },
+    {
+      "id": 64,
+      "nome": "Corretivo caneta",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 1
+    },
+    {
+      "id": 65,
+      "nome": "Corretivo fita",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 2
+    },
+    {
+      "id": 66,
+      "nome": "Curativo redondo - infiltração",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 75,
+      "saldo_atual": 50
+    },
+    {
+      "id": 67,
+      "nome": "Detergente",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 30,
+      "saldo_atual": 20
+    },
+    {
+      "id": 68,
+      "nome": "Diazepan ampola",
+      "unidade": "UN",
+      "estoque_min": 8,
+      "estoque_max": 34,
+      "saldo_atual": 23
+    },
+    {
+      "id": 69,
+      "nome": "Difenidrin (difenidramina) 50mg/1ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 22,
+      "saldo_atual": 15
+    },
+    {
+      "id": 70,
+      "nome": "Dipirona 100mg/ml - 2ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 144,
+      "saldo_atual": 96
+    },
+    {
+      "id": 71,
+      "nome": "Diprospam 5mg/1ml",
+      "unidade": "UN",
+      "estoque_min": 12,
+      "estoque_max": 36,
+      "saldo_atual": 18
+    },
+    {
+      "id": 72,
+      "nome": "Dormonid",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 150,
+      "saldo_atual": 100
+    },
+    {
+      "id": 73,
+      "nome": "Eletrodo",
+      "unidade": "UN",
+      "estoque_min": 1200,
+      "estoque_max": 3600,
+      "saldo_atual": -140
+    },
+    {
+      "id": 74,
+      "nome": "Equipo comum",
+      "unidade": "UN",
+      "estoque_min": 20,
+      "estoque_max": 60,
+      "saldo_atual": 38
+    },
+    {
+      "id": 75,
+      "nome": "Envelope pardo (M)",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -19
+    },
+    {
+      "id": 76,
+      "nome": "Escova PVPI",
+      "unidade": "UN",
+      "estoque_min": 40,
+      "estoque_max": 166,
+      "saldo_atual": 111
+    },
+    {
+      "id": 77,
+      "nome": "Escova vaso sanitário",
+      "unidade": "UN",
+      "estoque_min": 2,
+      "estoque_max": 10,
+      "saldo_atual": -6
+    },
+    {
+      "id": 78,
+      "nome": "Esparadrapo",
+      "unidade": "UN",
+      "estoque_min": 12,
+      "estoque_max": 57,
+      "saldo_atual": 38
+    },
+    {
+      "id": 79,
+      "nome": "Esponja",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": -6
+    },
+    {
+      "id": 80,
+      "nome": "Euflexxa 1% - 2ml SERINGAS",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 627,
+      "saldo_atual": 418
+    },
+    {
+      "id": 81,
+      "nome": "Extensor 120cm",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 48,
+      "saldo_atual": 32
+    },
+    {
+      "id": 82,
+      "nome": "Extensor 20 cm",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 79,
+      "saldo_atual": 53
+    },
+    {
+      "id": 83,
+      "nome": "Extensor 20 cm c/antirefluxo",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1200,
+      "saldo_atual": 499
+    },
+    {
+      "id": 84,
+      "nome": "Extensor oxigênio",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 5
+    },
+    {
+      "id": 85,
+      "nome": "Extensor Y p/bomba injetora",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 79
+    },
+    {
+      "id": 86,
+      "nome": "Fentanil 0,0785mg/10ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 34,
+      "saldo_atual": 23
+    },
+    {
+      "id": 87,
+      "nome": "Fenergan 25mg/2ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 144,
+      "saldo_atual": 96
+    },
+    {
+      "id": 88,
+      "nome": "Fibra preta",
+      "unidade": "UN",
+      "estoque_min": 3,
+      "estoque_max": 12,
+      "saldo_atual": 8
+    },
+    {
+      "id": 89,
+      "nome": "Fibra verde",
+      "unidade": "UN",
+      "estoque_min": 3,
+      "estoque_max": 10,
+      "saldo_atual": 4
+    },
+    {
+      "id": 90,
+      "nome": "Fio de sutura 2-0 45cm",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 5
+    },
+    {
+      "id": 91,
+      "nome": "Fita adesiva alto clave",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 8
+    },
+    {
+      "id": 92,
+      "nome": "Fita adesiva hospitalar",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 5
+    },
+    {
+      "id": 93,
+      "nome": "Fita empacotamento tranparente",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 4
+    },
+    {
+      "id": 94,
+      "nome": "Fita HGT",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 63,
+      "saldo_atual": 42
+    },
+    {
+      "id": 95,
+      "nome": "Flumazenil 0,1mg/5ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 75,
+      "saldo_atual": 50
+    },
+    {
+      "id": 96,
+      "nome": "Folha A4",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": -29
+    },
+    {
+      "id": 97,
+      "nome": "Folha timbrada",
+      "unidade": "UN",
+      "estoque_min": 3000,
+      "estoque_max": 9000,
+      "saldo_atual": 950
+    },
+    {
+      "id": 98,
+      "nome": "Fralda adulto",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 12,
+      "saldo_atual": 8
+    },
+    {
+      "id": 99,
+      "nome": "Furosemida",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 105,
+      "saldo_atual": 70
+    },
+    {
+      "id": 100,
+      "nome": "Gaze",
+      "unidade": "UN",
+      "estoque_min": 2500,
+      "estoque_max": 7500,
+      "saldo_atual": -4000
+    },
+    {
+      "id": 101,
+      "nome": "Gaze estéril",
+      "unidade": "UN",
+      "estoque_min": 200,
+      "estoque_max": 600,
+      "saldo_atual": 78
+    },
+    {
+      "id": 102,
+      "nome": "Gel p/eco",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 1
+    },
+    {
+      "id": 103,
+      "nome": "Gliconato de cálcio 10% - 10ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 300,
+      "saldo_atual": 200
+    },
+    {
+      "id": 104,
+      "nome": "Glicose 50%",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 285,
+      "saldo_atual": 190
+    },
+    {
+      "id": 105,
+      "nome": "Grampeador",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": -1
+    },
+    {
+      "id": 106,
+      "nome": "Grampo 26/6",
+      "unidade": "UN",
+      "estoque_min": 8,
+      "estoque_max": 24,
+      "saldo_atual": -34
+    },
+    {
+      "id": 107,
+      "nome": "Henetix 300mg/100ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 13,
+      "saldo_atual": 9
+    },
+    {
+      "id": 108,
+      "nome": "Henetix 350mg/100ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 54,
+      "saldo_atual": 36
+    },
+    {
+      "id": 109,
+      "nome": "Heparina",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 7
+    },
+    {
+      "id": 110,
+      "nome": "Hidrocortisona 500mg",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 30,
+      "saldo_atual": 20
+    },
+    {
+      "id": 111,
+      "nome": "Iomeron 300/50ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 112,
+      "nome": "Iomeron 300/100ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 113,
+      "nome": "Iomeron 400/50ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 114,
+      "nome": "Iomeron 400/100ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -25
+    },
+    {
+      "id": 115,
+      "nome": "Doltarem 0,5",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 116,
+      "nome": "Isordil sublingual",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 18,
+      "saldo_atual": 12
+    },
+    {
+      "id": 117,
+      "nome": "Lamina Bisturi",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 58,
+      "saldo_atual": 39
+    },
+    {
+      "id": 118,
+      "nome": "Lençol de papel",
+      "unidade": "UN",
+      "estoque_min": 120,
+      "estoque_max": 630,
+      "saldo_atual": 420
+    },
+    {
+      "id": 119,
+      "nome": "Lenço umedecido swab alcool",
+      "unidade": "UN",
+      "estoque_min": 500,
+      "estoque_max": 1500,
+      "saldo_atual": -100
+    },
+    {
+      "id": 120,
+      "nome": "Limpa porcelanato",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": -13
+    },
+    {
+      "id": 121,
+      "nome": "Loratadina",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 162,
+      "saldo_atual": 108
+    },
+    {
+      "id": 122,
+      "nome": "Luva estéril 7,0",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 40
+    },
+    {
+      "id": 123,
+      "nome": "Luva estéril 7,5",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 75
+    },
+    {
+      "id": 124,
+      "nome": "Luva estéril 8,0",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 50
+    },
+    {
+      "id": 125,
+      "nome": "Luva nitrilica M",
+      "unidade": "UN",
+      "estoque_min": 600,
+      "estoque_max": 1800,
+      "saldo_atual": 800
+    },
+    {
+      "id": 126,
+      "nome": "Luva nitrilica G",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 450,
+      "saldo_atual": 300
+    },
+    {
+      "id": 127,
+      "nome": "Luva limpeza p",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 128,
+      "nome": "Luva procedimento G",
+      "unidade": "UN",
+      "estoque_min": 800,
+      "estoque_max": 3000,
+      "saldo_atual": 2000
+    },
+    {
+      "id": 129,
+      "nome": "Luva procedimento M",
+      "unidade": "UN",
+      "estoque_min": 1200,
+      "estoque_max": 3600,
+      "saldo_atual": 100
+    },
+    {
+      "id": 130,
+      "nome": "Luva procedimento P",
+      "unidade": "UN",
+      "estoque_min": 1500,
+      "estoque_max": 4500,
+      "saldo_atual": 700
+    },
+    {
+      "id": 131,
+      "nome": "Luva procedimento PP",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 132,
+      "nome": "Manta SMS 120x120",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 195,
+      "saldo_atual": 130
+    },
+    {
+      "id": 133,
+      "nome": "Mascara",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 177,
+      "saldo_atual": 118
+    },
+    {
+      "id": 134,
+      "nome": "Mascara 3m",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 58,
+      "saldo_atual": 39
+    },
+    {
+      "id": 135,
+      "nome": "Micropore 1,2x10",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 136,
+      "nome": "Micropore 25x10",
+      "unidade": "UN",
+      "estoque_min": 40,
+      "estoque_max": 120,
+      "saldo_atual": 27
+    },
+    {
+      "id": 137,
+      "nome": "Micropore 50x10",
+      "unidade": "UN",
+      "estoque_min": 30,
+      "estoque_max": 90,
+      "saldo_atual": -5
+    },
+    {
+      "id": 138,
+      "nome": "Mofina 10mg/1ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 73,
+      "saldo_atual": 49
+    },
+    {
+      "id": 139,
+      "nome": "Mouse USB",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": 2
+    },
+    {
+      "id": 140,
+      "nome": "Multihance 10ML",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 2
+    },
+    {
+      "id": 141,
+      "nome": "Multilux bac 5L",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": -4
+    },
+    {
+      "id": 142,
+      "nome": "Muvinlax",
+      "unidade": "UN",
+      "estoque_min": 40,
+      "estoque_max": 120,
+      "saldo_atual": 16
+    },
+    {
+      "id": 143,
+      "nome": "Ondasetrona cp",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 13,
+      "saldo_atual": 9
+    },
+    {
+      "id": 144,
+      "nome": "Pano alvejado",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 42,
+      "saldo_atual": 28
+    },
+    {
+      "id": 145,
+      "nome": "Papel couche A3",
+      "unidade": "UN",
+      "estoque_min": 5000,
+      "estoque_max": 15000,
+      "saldo_atual": -3000
+    },
+    {
+      "id": 146,
+      "nome": "Papel couche A4",
+      "unidade": "UN",
+      "estoque_min": 1000,
+      "estoque_max": 8250,
+      "saldo_atual": 5500
+    },
+    {
+      "id": 147,
+      "nome": "Papel cozinha",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 91
+    },
+    {
+      "id": 148,
+      "nome": "Papel higiênico rolão",
+      "unidade": "UN",
+      "estoque_min": 72,
+      "estoque_max": 216,
+      "saldo_atual": -89
+    },
+    {
+      "id": 149,
+      "nome": "Papel higiênico cai cai - caixa",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": 2
+    },
+    {
+      "id": 150,
+      "nome": "Papel toalha bobina",
+      "unidade": "UN",
+      "estoque_min": 12,
+      "estoque_max": 36,
+      "saldo_atual": -11
+    },
+    {
+      "id": 151,
+      "nome": "Papel toalha interfolha",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": -36
+    },
+    {
+      "id": 152,
+      "nome": "Paracetamol 750mg",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 12,
+      "saldo_atual": 8
+    },
+    {
+      "id": 153,
+      "nome": "Pasta em L",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 30,
+      "saldo_atual": 7
+    },
+    {
+      "id": 154,
+      "nome": "Perfex",
+      "unidade": "UN",
+      "estoque_min": 8,
+      "estoque_max": 24,
+      "saldo_atual": -3
+    },
+    {
+      "id": 155,
+      "nome": "Perfurador soro",
+      "unidade": "UN",
+      "estoque_min": 10,
+      "estoque_max": 30,
+      "saldo_atual": -133
+    },
+    {
+      "id": 156,
+      "nome": "Persantin (Dipiridamol)",
+      "unidade": "UN",
+      "estoque_min": 200,
+      "estoque_max": 600,
+      "saldo_atual": 11
+    },
+    {
+      "id": 157,
+      "nome": "Pilha AA",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -2
+    },
+    {
+      "id": 158,
+      "nome": "Pilha AAA",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 12,
+      "saldo_atual": 8
+    },
+    {
+      "id": 159,
+      "nome": "Plasil ampola",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 124,
+      "saldo_atual": 83
+    },
+    {
+      "id": 160,
+      "nome": "Plasil comprimido",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 18,
+      "saldo_atual": 12
+    },
+    {
+      "id": 161,
+      "nome": "Prednisona 20mg comprimido",
+      "unidade": "UN",
+      "estoque_min": 200,
+      "estoque_max": 600,
+      "saldo_atual": 365
+    },
+    {
+      "id": 162,
+      "nome": "Preservativo",
+      "unidade": "UN",
+      "estoque_min": 50,
+      "estoque_max": 150,
+      "saldo_atual": 46
+    },
+    {
+      "id": 163,
+      "nome": "Prohance 50ML",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 6
+    },
+    {
+      "id": 164,
+      "nome": "Propé",
+      "unidade": "UN",
+      "estoque_min": 100,
+      "estoque_max": 300,
+      "saldo_atual": 190
+    },
+    {
+      "id": 165,
+      "nome": "Protamina 1000ui/5ml amp",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 30,
+      "saldo_atual": 20
+    },
+    {
+      "id": 166,
+      "nome": "Protetor auricular",
+      "unidade": "UN",
+      "estoque_min": 600,
+      "estoque_max": 3457,
+      "saldo_atual": 2305
+    },
+    {
+      "id": 167,
+      "nome": "Receituario controlado",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 24,
+      "saldo_atual": 16
+    },
+    {
+      "id": 168,
+      "nome": "Receituario simples",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 31,
+      "saldo_atual": 21
+    },
+    {
+      "id": 169,
+      "nome": "Renehavis",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 170,
+      "nome": "Riohex 2% (degermante)",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 6
+    },
+    {
+      "id": 171,
+      "nome": "Riohex 5% (alcoolica) clorexidina alcoolina",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 10
+    },
+    {
+      "id": 172,
+      "nome": "Sabão em barra",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 2
+    },
+    {
+      "id": 173,
+      "nome": "Sabonete líquido",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 1
+    },
+    {
+      "id": 174,
+      "nome": "Sacola P laudos",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 45000,
+      "saldo_atual": 30000
+    },
+    {
+      "id": 175,
+      "nome": "Sacola M (200pct)",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10800,
+      "saldo_atual": 7200
+    },
+    {
+      "id": 176,
+      "nome": "Sacola G (200pct)",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 300,
+      "saldo_atual": 200
+    },
+    {
+      "id": 177,
+      "nome": "Saco de lixo 100L branco",
+      "unidade": "UN",
+      "estoque_min": 4,
+      "estoque_max": 12,
+      "saldo_atual": 1
+    },
+    {
+      "id": 178,
+      "nome": "Saco de lixo 100L preto",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 3
+    },
+    {
+      "id": 179,
+      "nome": "Saco de lixo 100L verde",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 2
+    },
+    {
+      "id": 180,
+      "nome": "Saco de lixo 60L branco",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 5
+    },
+    {
+      "id": 181,
+      "nome": "Saco de lixo 60L preto",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": -6
+    },
+    {
+      "id": 182,
+      "nome": "Saco de lixo 60L verde",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 7
+    },
+    {
+      "id": 183,
+      "nome": "Sapolio liquido (saponacio Cremoso liquido )",
+      "unidade": "UN",
+      "estoque_min": 5,
+      "estoque_max": 15,
+      "saldo_atual": 6
+    },
+    {
+      "id": 184,
+      "nome": "Seringa 1ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 185,
+      "nome": "Seringa 10ML c/rosca",
+      "unidade": "UN",
+      "estoque_min": 600,
+      "estoque_max": 1800,
+      "saldo_atual": 548
+    },
+    {
+      "id": 186,
+      "nome": "Seringa 20ML c/rosca",
+      "unidade": "UN",
+      "estoque_min": 600,
+      "estoque_max": 1800,
+      "saldo_atual": 513
+    },
+    {
+      "id": 187,
+      "nome": "Seringa 3ML c/rosca",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1200,
+      "saldo_atual": 278
+    },
+    {
+      "id": 188,
+      "nome": "Seringa 5ML c/rosca",
+      "unidade": "UN",
+      "estoque_min": 400,
+      "estoque_max": 1200,
+      "saldo_atual": 422
+    },
+    {
+      "id": 189,
+      "nome": "Seringa 60ML c/ bico cateter",
+      "unidade": "UN",
+      "estoque_min": 25,
+      "estoque_max": 259,
+      "saldo_atual": 173
+    },
+    {
+      "id": 190,
+      "nome": "Seringa 60ML c/ rosca",
+      "unidade": "UN",
+      "estoque_min": 30,
+      "estoque_max": 283,
+      "saldo_atual": 189
+    },
+    {
+      "id": 191,
+      "nome": "Seringas injetora RM",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 6
+    },
+    {
+      "id": 192,
+      "nome": "Seringas injetora TC matriz",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 21,
+      "saldo_atual": 14
+    },
+    {
+      "id": 193,
+      "nome": "Seringas injetora TC HBM",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 194,
+      "nome": "Soro fisiologico 1000ml",
+      "unidade": "UN",
+      "estoque_min": 15,
+      "estoque_max": 45,
+      "saldo_atual": 3
+    },
+    {
+      "id": 195,
+      "nome": "Soro fisiologico 10ml",
+      "unidade": "UN",
+      "estoque_min": 30,
+      "estoque_max": 261,
+      "saldo_atual": 174
+    },
+    {
+      "id": 196,
+      "nome": "Soro fisiologico 250ml",
+      "unidade": "UN",
+      "estoque_min": 90,
+      "estoque_max": 270,
+      "saldo_atual": 32
+    },
+    {
+      "id": 197,
+      "nome": "Soro fisiologico 500ml",
+      "unidade": "UN",
+      "estoque_min": 15,
+      "estoque_max": 45,
+      "saldo_atual": -7
+    },
+    {
+      "id": 198,
+      "nome": "Teclado USB",
+      "unidade": "UN",
+      "estoque_min": 1,
+      "estoque_max": 10,
+      "saldo_atual": 1
+    },
+    {
+      "id": 199,
+      "nome": "Tesoura P",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 3
+    },
+    {
+      "id": 200,
+      "nome": "Tesoura G",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 2
+    },
+    {
+      "id": 201,
+      "nome": "Torneira de alto fluxo",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 219,
+      "saldo_atual": 146
+    },
+    {
+      "id": 202,
+      "nome": "Torneirinha 3 vias c/rosca",
+      "unidade": "UN",
+      "estoque_min": 300,
+      "estoque_max": 900,
+      "saldo_atual": 141
+    },
+    {
+      "id": 203,
+      "nome": "Touca",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 426,
+      "saldo_atual": 284
+    },
+    {
+      "id": 204,
+      "nome": "Tubo endotraqueal c/balão 7,0",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 205,
+      "nome": "Tubo endotraqueal c/balão 8,0",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 206,
+      "nome": "Visipaque 270mg/50ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 207,
+      "nome": "Vitamina E",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": -3
+    },
+    {
+      "id": 208,
+      "nome": "Xilocaina 2% 20ML s/vaso",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 67,
+      "saldo_atual": 45
+    },
+    {
+      "id": 209,
+      "nome": "Xilocaina geleia",
+      "unidade": "UN",
+      "estoque_min": 3,
+      "estoque_max": 10,
+      "saldo_atual": 6
+    },
+    {
+      "id": 211,
+      "nome": "micropore 1,2x10 esteril",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 212,
+      "nome": "Lacre do carro de PCR",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 213,
+      "nome": "Oclusor (tampa para acesso Venoso)",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 214,
+      "nome": "Tinta para carimbo",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 215,
+      "nome": "Aerolin Sulfato de Salbutamol 100mcg",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 216,
+      "nome": "sabão em pó",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    },
+    {
+      "id": 217,
+      "nome": "Dotarem 0,5 60ml",
+      "unidade": "UN",
+      "estoque_min": 0,
+      "estoque_max": 10,
+      "saldo_atual": 0
+    }
+  ],
+  "movimentacoes": [],
+  "logs": [
+    {
+      "id": 1,
+      "data": "2026-08-24 16:50:00",
+      "usuario": "Sistema (Importação)",
+      "acao": "Carga Inicial",
+      "detalhes": "Importação de 216 produtos a partir da planilha CONTROLE DE ESTOQUE."
+    }
+  ]
+};
+
+let appData={produtos:[],movimentacoes:[],logs:[],categorias:['Medicamentos','Materiais','Equipamentos','Limpeza','Outros']};
+let usuarioAtual={nome:'',perfil:'consulta'};
+let paginaEstoque=1;
+let paginaLogs=1;
+const ITENS_POR_PAGINA=10;
+let undoStack=[];
+function isJsonBinConfigurado(){
+  return JSONBIN_BIN_ID&&JSONBIN_BIN_ID!=='SEU_BIN_ID_AQUI'&&JSONBIN_MASTER_KEY&&JSONBIN_MASTER_KEY!=='SUA_MASTER_KEY_AQUI';
+}
+
+let ultimoSnapshot=null;
+let darkMode=localStorage.getItem('estoque_dark')==='true';
+if(darkMode){document.body.classList.add('dark');document.getElementById('darkToggle').checked=true}
+document.getElementById('loginPerfil').addEventListener('change',e=>{
+  const perf=e.target.value;
+  const precisaSenha=perf==='admin'||perf==='operador';
+  document.getElementById('groupSenha').style.display=precisaSenha?'block':'none';
+  document.getElementById('groupConfig').style.display=(perf==='admin'&&SENHA_ADMIN==='admin123')?'block':'none'
+});
+function toggleDark(){darkMode=!darkMode;document.body.classList.toggle('dark');localStorage.setItem('estoque_dark',darkMode)}
+function showLoading(ativo){document.getElementById('loadingOverlay').classList.toggle('active',ativo)}
+function toast(msg,tipo='info',duracao=4000){
+  const c=document.getElementById('toastContainer');
+  const d=document.createElement('div');
+  d.className='toast '+tipo;
+  d.innerHTML=(tipo==='success'?'✅':tipo==='error'?'❌':tipo==='warning'?'⚠️':'ℹ️')+' '+msg;
+  c.appendChild(d);
+  setTimeout(()=>{d.style.opacity='0';d.style.transform='translateX(100%)';setTimeout(()=>d.remove(),300)},duracao)
+}
+function abrirConfirmacao(titulo,texto,acao){
+  document.getElementById('confirmTitle').textContent=titulo;
+  document.getElementById('confirmText').textContent=texto;
+  document.getElementById('confirmBtn').onclick=()=>{fecharConfirmacao();acao()};
+  document.getElementById('confirmOverlay').classList.add('active')
+}
+function fecharConfirmacao(){document.getElementById('confirmOverlay').classList.remove('active')}
+let desfazerAcao=null;
+function mostrarUndo(texto,acao){
+  document.getElementById('undoText').textContent=texto;
+  desfazerAcao=acao;
+  const bar=document.getElementById('undoBar');
+  bar.classList.add('active');
+  setTimeout(()=>bar.classList.remove('active'),8000)
+}
+function executarDesfazer(){
+  if(desfazerAcao){desfazerAcao();desfazerAcao=null;document.getElementById('undoBar').classList.remove('active')}
+}
+function salvarSnapshot(){ultimoSnapshot=JSON.parse(JSON.stringify(appData))}
+function restaurarSnapshot(){
+  if(ultimoSnapshot){appData=JSON.parse(JSON.stringify(ultimoSnapshot));salvarDadosNoCloud();toast('Alteracao desfeita com sucesso!','success')}
+}
+async function carregarDadosDoCloud(forcar=false){
+  showLoading(true);
+  try{
+    const url=`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest?_t=${Date.now()}`;
+    const res=await fetch(url,{headers:{'X-Master-Key':JSONBIN_MASTER_KEY}});
+    if(!res.ok){
+      if(res.status===404) throw new Error('Bin nao encontrado (404). Verifique o Bin ID ou clique em "Enviar Dados para Nuvem" na aba Configuracoes.');
+      if(res.status===401||res.status===403) throw new Error('Chave de acesso invalida. Verifique a Master Key.');
+      throw new Error('Erro HTTP '+res.status);
+    }
+    const data=await res.json();
+    if(!data.record||(typeof data.record==='object'&&Object.keys(data.record).length===0)){
+      throw new Error('Bin existe mas esta vazio. Use "Enviar Dados para Nuvem" na aba Configuracoes.');
+    }
+    appData=data.record;
+    if(!appData.categorias)appData.categorias=['Medicamentos','Materiais','Equipamentos','Limpeza','Outros'];
+    if(!appData.produtos)appData.produtos=[];
+    if(!appData.movimentacoes)appData.movimentacoes=[];
+    if(!appData.logs)appData.logs=[];
+    atualizarUI();
+    toast('Dados sincronizados com sucesso!','success',4000)
+  }catch(err){
+    console.error('Falha ao carregar da nuvem:',err);
+    toast('Erro ao carregar dados: '+err.message,'error',8000);
+    if(appData.produtos.length===0&&DADOS_INICIAIS){
+      console.log('Carregando dados locais como fallback...');
+      appData=JSON.parse(JSON.stringify(DADOS_INICIAIS));
+      atualizarUI();
+      toast('Dados locais carregados. Configure o JSONBin para sincronizar na nuvem.','warning',6000);
+    }
+  }finally{
+    showLoading(false)
+  }
+}
+async function salvarDadosNoCloud(){
+  showLoading(true);
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_MASTER_KEY},
+      body:JSON.stringify(appData)
+    });
+    if(!res.ok){
+      let msg='Erro HTTP '+res.status;
+      try{const e=await res.json();if(e.message)msg=e.message;}catch(_){}
+      throw new Error(msg);
+    }
+    atualizarUI();
+    return true
+  }catch(err){
+    toast('Erro ao salvar na nuvem: '+err.message,'error',8000);
+    return false
+  }finally{
+    showLoading(false)
+  }
+}
+
+async function enviarDadosParaNuvem(){
+  if(JSONBIN_BIN_ID==='SEU_BIN_ID_AQUI'||JSONBIN_MASTER_KEY==='SUA_MASTER_KEY_AQUI'){
+    toast('Configure Bin ID e Master Key primeiro!','warning');
+    mudarAba('config',document.querySelectorAll('.tab-btn')[6]);
+    return;
+  }
+  showLoading(true);
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`,{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_MASTER_KEY},
+      body:JSON.stringify(appData)
+    });
+    if(!res.ok){
+      let msg='Erro HTTP '+res.status;
+      try{const e=await res.json();if(e.message)msg=e.message;}catch(_){}
+      throw new Error(msg);
+    }
+    toast('Dados enviados para a nuvem com sucesso!','success',4000);
+  }catch(err){
+    toast('Erro ao enviar para nuvem: '+err.message,'error',8000);
+  }finally{
+    showLoading(false);
+  }
+}
+function recarregarDadosLocais(){
+  appData=JSON.parse(JSON.stringify(DADOS_INICIAIS));
+  atualizarUI();
+  toast('Dados locais restaurados!','success',4000);
+}
+
+function atualizarUI(){
+  renderizarDashboard();
+  renderizarTabelaEstoque();
+  renderizarListaCompras();
+  renderizarLogs();
+  carregarSelects();
+  renderizarMovRecentes();
+  renderizarRelatorios();
+  atualizarFiltrosCategoria()
+}
+function mostrarAvisoConfiguracao(){
+  const modalBody=document.querySelector('#loginModal .modal-body');
+  if(!modalBody.querySelector('.aviso-config')){
+    const aviso=document.createElement('div');
+    aviso.className='aviso-config';
+    aviso.style.cssText='background:var(--warning-bg);border-left:4px solid var(--warning);padding:12px 16px;border-radius:8px;margin-bottom:16px;color:#92400e;font-size:.9rem';
+    aviso.innerHTML='<strong>⚠️ Primeiro Acesso</strong><br>JSONBin.io não está configurado. Você precisa informar o Bin ID e Master Key para sincronizar os dados na nuvem.<br><br><button class="btn btn-primary" style="width:100%" onclick="entrarComoAdminRapido()">Entrar como Admin para Configurar</button><hr style="border:0;border-top:1px solid var(--border);margin:12px 0"><button class="btn btn-outline" style="width:100%" onclick="entrarComoVisitanteDireto()">Ignorar e Acessar como Visitante (Dados Locais)</button>';
+    modalBody.insertBefore(aviso,modalBody.firstChild);
+  }
+}
+function entrarComoAdminRapido(){
+  document.getElementById('loginNome').value='Admin';
+  document.getElementById('loginPerfil').value='admin';
+  document.getElementById('groupSenha').style.display='block';
+  document.getElementById('groupConfig').style.display=(SENHA_ADMIN==='admin123')?'block':'none';
+  document.getElementById('loginSenha').focus();
+  const aviso=document.querySelector('.aviso-config');
+  if(aviso)aviso.remove();
+}
+function entrarComoVisitanteDireto(){
+  const aviso=document.querySelector('.aviso-config');
+  if(aviso)aviso.remove();
+  acessarComoVisitante();
+}
+
+function acessarComoVisitante(){
+  usuarioAtual={nome:'Visitante',perfil:'consulta'};
+  document.getElementById('txtUsuario').textContent='Visitante';
+  const badge=document.getElementById('badgePerfil');
+  badge.textContent='Consulta';
+  badge.className='badge badge-success';
+  document.getElementById('loginModal').style.display='none';
+  document.getElementById('btnSalvarMov').disabled=true;
+  document.getElementById('msgMovRestrito').style.display='block';
+  document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
+  if(isJsonBinConfigurado()){
+    carregarDadosDoCloud();
+  }else{
+    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',6000);
+  }
+}
+
+function autenticar(){
+  const nome=document.getElementById('loginNome').value.trim()||'Usuario';
+  const perfil=document.getElementById('loginPerfil').value;
+  const senha=document.getElementById('loginSenha').value;
+  const configSenha=document.getElementById('configSenha').value;
+  if(perfil==='admin'&&senha!==SENHA_ADMIN){toast('Senha de administrador incorreta!','error');return}
+  if(perfil==='operador'&&senha!==SENHA_ADMIN){toast('Senha incorreta!','error');return}
+  if(configSenha&&perfil==='admin'){
+    SENHA_ADMIN=configSenha;
+    localStorage.setItem('estoque_senha_admin',SENHA_ADMIN);
+    toast('Senha de admin configurada!','success')
+  }
+  usuarioAtual={nome,perfil};
+  document.getElementById('txtUsuario').textContent=nome;
+  const badge=document.getElementById('badgePerfil');
+  badge.textContent=perfil==='admin'?'Admin':perfil==='operador'?'Operador':'Consulta';
+  badge.className='badge '+(perfil==='admin'?'badge-danger':perfil==='operador'?'badge-warning':'badge-success');
+  document.getElementById('loginModal').style.display='none';
+  if(perfil==='consulta'){
+    document.getElementById('btnSalvarMov').disabled=true;
+    document.getElementById('msgMovRestrito').style.display='block';
+    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none')
+  }else if(perfil==='operador'){
+    document.getElementById('btnSalvarMov').disabled=false;
+    document.getElementById('msgMovRestrito').style.display='none';
+    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none')
+  }else{
+    document.getElementById('btnSalvarMov').disabled=false;
+    document.getElementById('msgMovRestrito').style.display='none';
+    document.querySelectorAll('.admin-only').forEach(el=>el.style.display='inline-block')
+  }
+  if(isJsonBinConfigurado()){
+    carregarDadosDoCloud();
+  }else{
+    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',6000);
+  }
+}
+function sair(){
+  usuarioAtual={nome:'',perfil:'consulta'};
+  document.getElementById('loginModal').style.display='flex';
+  document.getElementById('loginNome').value='';
+  document.getElementById('loginSenha').value='';
+  document.getElementById('loginPerfil').value='consulta';
+  document.getElementById('groupSenha').style.display='none';
+  document.getElementById('groupConfig').style.display='none'
+}
+function mudarAba(abaId,btn){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('aba'+(abaId.charAt(0).toUpperCase()+abaId.slice(1))).classList.add('active');
+  btn.classList.add('active');
+  if(abaId==='dashboard')renderizarDashboard();
+  if(abaId==='relatorios')renderizarRelatorios()
+}
+function formatarMoeda(v){return'R$ '+(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function formatarNumero(v){return(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function calcularPctEstoque(p){
+  if(!p.estoque_max||p.estoque_max<=0)return 0;
+  return Math.min(100,Math.round((p.saldo_atual/p.estoque_max)*100))
+}
+function getStatusProduto(p){
+  const pct=calcularPctEstoque(p);
+  if(p.saldo_atual<=0)return'critico';
+  if(p.saldo_atual<=p.estoque_min)return'alerta';
+  if(pct<30)return'baixo';
+  return'ok'
+}
+function getStatusLabel(s){
+  const map={ok:['OK','badge-success'],alerta:['ALERTA','badge-warning'],critico:['CRITICO','badge-danger'],baixo:['BAIXO','badge-warning']};
+  return map[s]||['OK','badge-success']
+}
+function getCatClass(cat){
+  const idx=appData.categorias.indexOf(cat);
+  return'tag-cat-'+((idx%5)+1)
+}
+function renderizarDashboard(){
+  const total=appData.produtos.length;
+  const alertas=appData.produtos.filter(p=>p.saldo_atual<=p.estoque_min).length;
+  const valor=appData.produtos.reduce((s,p)=>s+((p.saldo_atual||0)*(p.preco_custo||0)),0);
+  const hoje=new Date().toDateString();
+  const movHoje=appData.movimentacoes.filter(m=>new Date(m.data).toDateString()===hoje).length;
+  document.getElementById('kpiTotal').textContent=total;
+  document.getElementById('kpiAlerta').textContent=alertas;
+  document.getElementById('kpiValor').textContent=formatarMoeda(valor);
+  document.getElementById('kpiMovHoje').textContent=movHoje;
+  const crit=appData.produtos.filter(p=>p.saldo_atual<=p.estoque_min).sort((a,b)=>a.saldo_atual-b.saldo_atual).slice(0,8);
+  const tb=document.getElementById('tbDashboardCritico');
+  tb.innerHTML='';
+  if(!crit.length){
+    tb.innerHTML='<tr><td colspan=6 class=empty-state>Nenhum produto em alerta!</td></tr>';
+    return
+  }
+  crit.forEach(p=>{
+    const sug=Math.max(0,(p.estoque_max||0)-(p.saldo_atual||0));
+    const st=getStatusProduto(p);
+    const [lbl,cls]=getStatusLabel(st);
+    tb.innerHTML+=`<tr><td><strong>${p.nome}</strong></td><td><span class='tag ${getCatClass(p.categoria)}'>${p.categoria||'-'}</span></td><td>${formatarNumero(p.saldo_atual)}</td><td>${formatarNumero(p.estoque_min)}</td><td><strong style=color:var(--primary)>${formatarNumero(sug)} ${p.unidade}</strong></td><td><span class='badge ${cls}'>${lbl}</span></td></tr>`
+  });
+  renderChartCategorias();
+  renderChartMovimentacoes()
+}
+function renderChartCategorias(){
+  const el=document.getElementById('chartCategorias');
+  const cats={};
+  appData.produtos.forEach(p=>{const c=p.categoria||'Sem categoria';cats[c]=(cats[c]||0)+1});
+  const entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  if(!entries.length){
+    el.innerHTML='<div class=empty-state><div class=empty-state-icon>📊</div>Sem dados</div>';
+    return
+  }
+  const max=Math.max(...entries.map(e=>e[1]));
+  let html='<div style=width:100%;padding:8px>';
+  entries.forEach(([nome,qtd])=>{
+    const pct=(qtd/max)*100;
+    const w=Math.max(pct,8);
+    html+=`<div style=display:flex;align-items:center;margin-bottom:10px;font-size:.85rem><div style=min-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px;font-weight:600>${nome}</div><div style=flex:1;height:22px;background:var(--border);border-radius:4px;overflow:hidden><div style=width:${w}%;height:100%;background:var(--primary);border-radius:4px;transition:width .5s ease></div></div><div style=min-width:40px;text-align:right;font-weight:700;margin-left:8px>${qtd}</div></div>`
+  });
+  html+='</div>';
+  el.innerHTML=html
+}
+function renderChartMovimentacoes(){
+  const el=document.getElementById('chartMovimentacoes');
+  const dias=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    dias.push(d.toISOString().split('T')[0])
+  }
+  const ent=dias.map(d=>appData.movimentacoes.filter(m=>m.tipo==='ENTRADA'&&m.data&&m.data.startsWith(d)).reduce((s,m)=>s+(m.qtd||0),0));
+  const sai=dias.map(d=>appData.movimentacoes.filter(m=>m.tipo==='SAIDA'&&m.data&&m.data.startsWith(d)).reduce((s,m)=>s+(m.qtd||0),0));
+  const max=Math.max(...ent,...sai,1);
+  if(!appData.movimentacoes.length){
+    el.innerHTML='<div class=empty-state><div class=empty-state-icon>📈</div>Sem movimentacoes</div>';
+    return
+  }
+  let html='<div style=width:100%;padding:8px;display:flex;align-items:flex-end;justify-content:space-around;height:200px;gap:6px>';
+  dias.forEach((d,i)=>{
+    const de=ent[i]||0;
+    const ds=sai[i]||0;
+    const he=Math.round(((de||0.1)/max)*160);
+    const hs=Math.round(((ds||0.1)/max)*160);
+    const lbl=new Date(d).toLocaleDateString('pt-BR',{weekday:'short'});
+    html+=`<div style=display:flex;flex-direction:column;align-items:center;gap:4px;flex:1><div style=display:flex;gap:3px;align-items:flex-end;height:160px><div style=width:14px;height:${he}px;background:var(--success);border-radius:3px;min-height:4px title='Entrada: ${formatarNumero(de)}'></div><div style=width:14px;height:${hs}px;background:var(--danger);border-radius:3px;min-height:4px title='Saida: ${formatarNumero(ds)}'></div></div><span style=font-size:.7rem;color:var(--muted);text-transform:uppercase>${lbl}</span></div>`
+  });
+  html+='</div><div style=text-align:center;font-size:.75rem;color:var(--muted);margin-top:4px><span style=display:inline-flex;align-items:center;gap:4px><span style=width:10px;height:10px;background:var(--success);border-radius:2px;display:inline-block></span> Entrada</span><span style=margin-left:12px;display:inline-flex;align-items:center;gap:4px><span style=width:10px;height:10px;background:var(--danger);border-radius:2px;display:inline-block></span> Saida</span></div>';
+  el.innerHTML=html
+}
+function renderizarTabelaEstoque(){
+  const busca=document.getElementById('buscaProduto').value.toLowerCase();
+  const catFiltro=document.getElementById('filtroCategoria').value;
+  const statusFiltro=document.getElementById('filtroStatus').value;
+  const ordenar=document.getElementById('filtroOrdenar').value;
+  let lista=[...appData.produtos];
+  if(busca)lista=lista.filter(p=>(p.nome||'').toLowerCase().includes(busca)||(p.localizacao||'').toLowerCase().includes(busca)||String(p.id).includes(busca));
+  if(catFiltro)lista=lista.filter(p=>p.categoria===catFiltro);
+  if(statusFiltro){
+    lista=lista.filter(p=>{
+      const s=getStatusProduto(p);
+      return s===statusFiltro||(statusFiltro==='alerta'&&(s==='alerta'||s==='critico'))
+    })
+  }
+  lista.sort((a,b)=>{
+    if(ordenar==='nome')return(a.nome||'').localeCompare(b.nome||'');
+    if(ordenar==='saldo_asc')return(a.saldo_atual||0)-(b.saldo_atual||0);
+    if(ordenar==='saldo_desc')return(b.saldo_atual||0)-(a.saldo_atual||0);
+    if(ordenar==='custo_desc')return((b.saldo_atual||0)*(b.preco_custo||0))-((a.saldo_atual||0)*(a.preco_custo||0));
+    if(ordenar==='ultima_mov'){
+      const da=appData.movimentacoes.filter(m=>m.produtoId===a.id).pop();
+      const db=appData.movimentacoes.filter(m=>m.produtoId===b.id).pop();
+      return(new Date(db?.data||0))-(new Date(da?.data||0))
+    }
+    return 0
+  });
+  const totalPaginas=Math.ceil(lista.length/ITENS_POR_PAGINA)||1;
+  paginaEstoque=Math.min(paginaEstoque,totalPaginas);
+  const inicio=(paginaEstoque-1)*ITENS_POR_PAGINA;
+  const paginados=lista.slice(inicio,inicio+ITENS_POR_PAGINA);
+  const tb=document.getElementById('tbEstoque');
+  tb.innerHTML='';
+  if(!paginados.length){
+    tb.innerHTML='<tr><td colspan=11 class=empty-state><div class=empty-state-icon>📦</div>Nenhum produto encontrado</td></tr>';
+    renderPaginacao('paginacaoEstoque',totalPaginas,paginaEstoque,'paginaEstoque');
+    return
+  }
+  paginados.forEach(p=>{
+    const pct=calcularPctEstoque(p);
+    const st=getStatusProduto(p);
+    const [lbl,cls]=getStatusLabel(st);
+    const valTot=(p.saldo_atual||0)*(p.preco_custo||0);
+    const pctClass=pct<=20?'progress-low':pct<=50?'progress-medium':'progress-high';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><strong>${p.nome}</strong>${p.localizacao?`<br><small style=color:var(--muted)>${p.localizacao}</small>`:''}</td><td><span class='tag ${getCatClass(p.categoria)}'>${p.categoria||'-'}</span></td><td>${p.unidade}</td><td>${formatarNumero(p.estoque_min)}</td><td>${formatarNumero(p.estoque_max)}</td><td><strong>${formatarNumero(p.saldo_atual)}</strong></td><td><div class=stock-visual><div class=stock-bar-bg><div class='stock-bar-fill ${pctClass}' style=width:${pct}%></div></div><span class=stock-text>${pct}%</span></div></td><td>${p.preco_custo?formatarMoeda(p.preco_custo):'-'}</td><td>${valTot?formatarMoeda(valTot):'-'}</td><td><span class='badge ${cls}'>${lbl}</span></td><td class='no-print action-btns'><button class='btn btn-sm btn-outline tooltip' data-tip='Ver detalhes' onclick='abrirModalProduto(${p.id})'>👁</button><button class='btn btn-sm btn-outline tooltip' data-tip='Historico' onclick='abrirModalMovProduto(${p.id})'>📜</button>${usuarioAtual.perfil==='admin'?`<button class='btn btn-sm btn-outline tooltip' data-tip='Editar' onclick='abrirModalEditar(${p.id})'>✏️</button><button class='btn btn-sm btn-outline tooltip' data-tip='Inventario' onclick='abrirModalInventario(${p.id})'>⚖️</button><button class='btn btn-sm btn-danger tooltip' data-tip='Excluir' onclick='confirmarExclusao(${p.id})'>🗑</button>`:''}</td>`;
+    tb.appendChild(tr)
+  });
+  renderPaginacao('paginacaoEstoque',totalPaginas,paginaEstoque,'paginaEstoque')
+}
+function renderPaginacao(elId,total,atual,variavel){
+  const el=document.getElementById(elId);
+  if(total<=1){el.innerHTML='';return}
+  let html='';
+  html+=`<button ${atual===1?'disabled':''} onclick='${variavel}=1;renderizarTabelaEstoque()'>&laquo;</button>`;
+  html+=`<button ${atual===1?'disabled':''} onclick='${variavel}--;renderizarTabelaEstoque()'>&lsaquo;</button>`;
+  for(let i=Math.max(1,atual-2);i<=Math.min(total,atual+2);i++){
+    html+=`<button class='${i===atual?'active':''}' onclick='${variavel}=${i};renderizarTabelaEstoque()'>${i}</button>`
+  }
+  html+=`<button ${atual===total?'disabled':''} onclick='${variavel}++;renderizarTabelaEstoque()'>&rsaquo;</button>`;
+  html+=`<button ${atual===total?'disabled':''} onclick='${variavel}=${total};renderizarTabelaEstoque()'>&raquo;</button>`;
+  html+=`<span style=color:var(--muted);margin-left:8px>Pagina ${atual} de ${total}</span>`;
+  el.innerHTML=html
+}
+function renderizarListaCompras(){
+  const catFiltro=document.getElementById('filtroCompraCat').value;
+  const ordem=document.getElementById('filtroCompraOrdem').value;
+  let lista=appData.produtos.filter(p=>(p.saldo_atual||0)<=(p.estoque_min||0));
+  if(catFiltro)lista=lista.filter(p=>p.categoria===catFiltro);
+  lista=lista.map(p=>({...p,qtdSugerida:Math.max(0,(p.estoque_max||0)-(p.saldo_atual||0)),custoEst:Math.max(0,(p.estoque_max||0)-(p.saldo_atual||0))*(p.preco_custo||0)}));
+  if(ordem==='nome')lista.sort((a,b)=>(a.nome||'').localeCompare(b.nome||''));
+  else if(ordem==='valor')lista.sort((a,b)=>b.custoEst-a.custoEst);
+  else lista.sort((a,b)=>{const pa=(a.saldo_atual||0)/(a.estoque_max||1);const pb=(b.saldo_atual||0)/(b.estoque_max||1);return pa-pb});
+  const tb=document.getElementById('tbCompras');
+  tb.innerHTML='';
+  let total=0;
+  if(!lista.length){
+    tb.innerHTML='<tr><td colspan=8 class=empty-state><div class=empty-state-icon>✅</div>Todos os produtos estao com estoque adequado!</td></tr>';
+    document.getElementById('totalCompra').textContent=formatarMoeda(0);
+    return
+  }
+  lista.forEach(p=>{
+    total+=p.custoEst;
+    tb.innerHTML+=`<tr><td><strong>${p.nome}</strong></td><td><span class='tag ${getCatClass(p.categoria)}'>${p.categoria||'-'}</span></td><td>${formatarNumero(p.saldo_atual)}</td><td>${formatarNumero(p.estoque_min)}</td><td>${formatarNumero(p.estoque_max)}</td><td><strong style=color:var(--primary)>${formatarNumero(p.qtdSugerida)} ${p.unidade}</strong></td><td>${p.preco_custo?formatarMoeda(p.custoEst):'-'}</td><td>${p.fornecedor||'-'}</td></tr>`
+  });
+  document.getElementById('totalCompra').textContent=formatarMoeda(total)
+}
+function renderizarLogs(){
+  const busca=document.getElementById('buscaLog').value.toLowerCase();
+  const acaoFiltro=document.getElementById('filtroLogAcao').value;
+  const userFiltro=document.getElementById('filtroLogUsuario').value;
+  let lista=[...(appData.logs||[])];
+  if(busca)lista=lista.filter(l=>(l.detalhes||'').toLowerCase().includes(busca)||(l.acao||'').toLowerCase().includes(busca));
+  if(acaoFiltro)lista=lista.filter(l=>l.acao===acaoFiltro);
+  if(userFiltro)lista=lista.filter(l=>l.usuario===userFiltro);
+  const totalPaginas=Math.ceil(lista.length/ITENS_POR_PAGINA)||1;
+  paginaLogs=Math.min(paginaLogs,totalPaginas);
+  const inicio=(paginaLogs-1)*ITENS_POR_PAGINA;
+  const paginados=lista.slice(inicio,inicio+ITENS_POR_PAGINA);
+  const tb=document.getElementById('tbLogs');
+  tb.innerHTML='';
+  if(!paginados.length){
+    tb.innerHTML='<tr><td colspan=4 class=empty-state><div class=empty-state-icon>📜</div>Nenhum log encontrado</td></tr>';
+    renderPaginacaoLogs(totalPaginas);
+    return
+  }
+  paginados.forEach(l=>{
+    let acaoClass='';
+    if(l.acao==='ENTRADA'||l.acao==='DEVOLUCAO')acaoClass='log-entrada';
+    else if(l.acao==='SAIDA')acaoClass='log-saida';
+    else if(l.acao==='CADASTRO')acaoClass='log-cadastro';
+    else if(l.acao==='EDICAO')acaoClass='log-edicao';
+    else if(l.acao==='EXCLUSAO')acaoClass='log-exclusao';
+    else if(l.acao==='AJUSTE')acaoClass='log-ajuste';
+    tb.innerHTML+=`<tr><td>${l.data}</td><td>${l.usuario}</td><td class='${acaoClass}'>${l.acao}</td><td>${l.detalhes}</td></tr>`
+  });
+  renderPaginacaoLogs(totalPaginas)
+}
+function renderPaginacaoLogs(total){
+  const el=document.getElementById('paginacaoLogs');
+  if(total<=1){el.innerHTML='';return}
+  let html='';
+  html+=`<button ${paginaLogs===1?'disabled':''} onclick='paginaLogs=1;renderizarLogs()'>&laquo;</button>`;
+  html+=`<button ${paginaLogs===1?'disabled':''} onclick='paginaLogs--;renderizarLogs()'>&lsaquo;</button>`;
+  for(let i=Math.max(1,paginaLogs-2);i<=Math.min(total,paginaLogs+2);i++){
+    html+=`<button class='${i===paginaLogs?'active':''}' onclick='paginaLogs=${i};renderizarLogs()'>${i}</button>`
+  }
+  html+=`<button ${paginaLogs===total?'disabled':''} onclick='paginaLogs++;renderizarLogs()'>&rsaquo;</button>`;
+  html+=`<button ${paginaLogs===total?'disabled':''} onclick='paginaLogs=${total};renderizarLogs()'>&raquo;</button>`;
+  html+=`<span style=color:var(--muted);margin-left:8px>Pagina ${paginaLogs} de ${total}</span>`;
+  el.innerHTML=html
+}
+function renderizarMovRecentes(){
+  const tb=document.getElementById('tbMovRecentes');
+  tb.innerHTML='';
+  const recentes=[...appData.movimentacoes].sort((a,b)=>new Date(b.data)-new Date(a.data)).slice(0,10);
+  if(!recentes.length){
+    tb.innerHTML='<tr><td colspan=6 class=empty-state>Nenhuma movimentacao registrada</td></tr>';
+    return
+  }
+  recentes.forEach(m=>{
+    const p=appData.produtos.find(x=>x.id===m.produtoId);
+    const tipoClass=m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO'?'log-entrada':'log-saida';
+    tb.innerHTML+=`<tr><td>${new Date(m.data).toLocaleString('pt-BR')}</td><td>${p?p.nome:'#'+m.produtoId}</td><td class='${tipoClass}'>${m.tipo}</td><td>${formatarNumero(m.qtd)} ${p?p.unidade:''}</td><td>${m.destino||m.obs||'-'}</td><td>${m.usuario||'-'}</td></tr>`
+  })
+}
+function renderizarRelatorios(){
+  const periodo=parseInt(document.getElementById('relPeriodo').value)||7;
+  const corte=new Date();
+  corte.setDate(corte.getDate()-periodo);
+  const movs=appData.movimentacoes.filter(m=>new Date(m.data)>=corte);
+  renderChartABC();
+  renderChartPeriodo(movs,periodo);
+  renderRanking(movs)
+}
+function renderChartABC(){
+  const el=document.getElementById('chartABC');
+  const produtosComValor=appData.produtos.map(p=>({...p,valorTotal:(p.saldo_atual||0)*(p.preco_custo||0)})).filter(p=>p.valorTotal>0).sort((a,b)=>b.valorTotal-a.valorTotal);
+  if(!produtosComValor.length){
+    el.innerHTML='<div class=empty-state><div class=empty-state-icon>📊</div>Sem dados de valor</div>';
+    return
+  }
+  const totalValor=produtosComValor.reduce((s,p)=>s+p.valorTotal,0);
+  let acum=0;
+  const abc=produtosComValor.map(p=>{acum+=p.valorTotal;const pct=acum/totalValor;return{...p,acumPct:pct,classe:pct<=0.7?'A':pct<=0.9?'B':'C'}});
+  let html='<div style=width:100%;padding:8px>';
+  abc.slice(0,8).forEach(p=>{
+    const pct=(p.valorTotal/totalValor)*100;
+    const cor=p.classe==='A'?'var(--danger)':p.classe==='B'?'var(--warning)':'var(--success)';
+    html+=`<div style=display:flex;align-items:center;margin-bottom:10px;font-size:.85rem><div style=min-width:30px;font-weight:800;color:${cor}>${p.classe}</div><div style=min-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:8px>${p.nome}</div><div style=flex:1;height:20px;background:var(--border);border-radius:4px;overflow:hidden><div style=width:${Math.max(pct,2)}%;height:100%;background:${cor};border-radius:4px;transition:width .5s ease></div></div><div style=min-width:80px;text-align:right;font-weight:700;margin-left:8px;font-size:.8rem>${formatarMoeda(p.valorTotal)}</div></div>`
+  });
+  html+='</div><div style=text-align:center;font-size:.75rem;color:var(--muted);margin-top:4px><span style=color:var(--danger);font-weight:700>A</span> = 70% do valor | <span style=color:var(--warning);font-weight:700>B</span> = 20% | <span style=color:var(--success);font-weight:700>C</span> = 10%</div>';
+  el.innerHTML=html
+}
+function renderChartPeriodo(movs,periodo){
+  const el=document.getElementById('chartPeriodo');
+  const grupos={};
+  const hoje=new Date();
+  for(let i=periodo-1;i>=0;i--){
+    const d=new Date(hoje);d.setDate(d.getDate()-i);
+    const key=d.toISOString().split('T')[0];
+    grupos[key]={entrada:0,saida:0}
+  }
+  movs.forEach(m=>{
+    const key=m.data?m.data.split('T')[0]:'';
+    if(grupos[key]){
+      if(m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO')grupos[key].entrada+=m.qtd||0;
+      else if(m.tipo==='SAIDA')grupos[key].saida+=m.qtd||0
+    }
+  });
+  const entries=Object.entries(grupos);
+  const max=Math.max(...entries.map(e=>Math.max(e[1].entrada,e[1].saida)),1);
+  if(!entries.length||max===0){
+    el.innerHTML='<div class=empty-state><div class=empty-state-icon>📈</div>Sem dados no periodo</div>';
+    return
+  }
+  const step=periodo<=7?1:periodo<=30?5:10;
+  let html='<div style=width:100%;padding:8px;display:flex;align-items:flex-end;justify-content:space-around;height:180px;gap:3px>';
+  entries.forEach(([d,v],i)=>{
+    if(i%step!==0&&periodo>7)return;
+    const he=Math.round((v.entrada/max)*140)||2;
+    const hs=Math.round((v.saida/max)*140)||2;
+    const lbl=periodo<=7?new Date(d).toLocaleDateString('pt-BR',{weekday:'short'}):new Date(d).toLocaleDateString('pt-BR',{day:'/',month:'short'});
+    html+=`<div style=display:flex;flex-direction:column;align-items:center;gap:3px;flex:1><div style=display:flex;gap:2px;align-items:flex-end;height:140px><div style=width:8px;height:${he}px;background:var(--success);border-radius:2px;min-height:2px title='Entrada: ${formatarNumero(v.entrada)}'></div><div style=width:8px;height:${hs}px;background:var(--danger);border-radius:2px;min-height:2px title='Saida: ${formatarNumero(v.saida)}'></div></div><span style=font-size:.6rem;color:var(--muted);text-transform:uppercase;white-space:nowrap>${lbl}</span></div>`
+  });
+  html+='</div>';
+  el.innerHTML=html
+}
+function renderRanking(movs){
+  const tb=document.getElementById('tbRanking');
+  tb.innerHTML='';
+  const map={};
+  appData.produtos.forEach(p=>map[p.id]={nome:p.nome,entrada:0,saida:0,saldo:p.saldo_atual||0,valor:(p.saldo_atual||0)*(p.preco_custo||0)});
+  movs.forEach(m=>{
+    if(map[m.produtoId]){
+      if(m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO')map[m.produtoId].entrada+=m.qtd||0;
+      else if(m.tipo==='SAIDA')map[m.produtoId].saida+=m.qtd||0
+    }
+  });
+  const ranking=Object.values(map).sort((a,b)=>(b.entrada+b.saida)-(a.entrada+a.saida)).slice(0,10);
+  if(!ranking.length){
+    tb.innerHTML='<tr><td colspan=6 class=empty-state>Sem dados de movimentacao</td></tr>';
+    return
+  }
+  ranking.forEach((p,i)=>{
+    tb.innerHTML+=`<tr><td><strong>#${i+1}</strong></td><td>${p.nome}</td><td class=log-entrada>${formatarNumero(p.entrada)}</td><td class=log-saida>${formatarNumero(p.saida)}</td><td>${formatarNumero(p.saldo)}</td><td>${p.valor?formatarMoeda(p.valor):'-'}</td></tr>`
+  })
+}
+function abrirModalEditarCategoriaMassa(){
+  if(usuarioAtual.perfil!=='admin')return;
+  const div=document.getElementById('listaProdutosCategoriaMassa');
+  div.innerHTML='';
+  // Atualizar select de categorias
+  const sel=document.getElementById('novaCatMassa');
+  sel.innerHTML='<option value="">Sem categoria</option>';
+  (appData.categorias||[]).forEach(c=>{sel.innerHTML+=`<option value='${c}'>${c}</option>`});
+  // Listar produtos com checkboxes
+  const lista=[...appData.produtos].sort((a,b)=>(a.nome||'').localeCompare(b.nome||''));
+  if(!lista.length){
+    div.innerHTML='<div class="empty-state">Nenhum produto cadastrado</div>';
+  }else{
+    lista.forEach(p=>{
+      const item=document.createElement('div');
+      item.style.cssText='display:flex;align-items:center;gap:8px;padding:6px;border-bottom:1px solid var(--border);font-size:.9rem';
+      item.innerHTML=`<input type='checkbox' class='chk-cat-massa' value='${p.id}' id='chk_cat_${p.id}' style='width:auto'><label for='chk_cat_${p.id}' style='margin:0;cursor:pointer;font-weight:400;color:var(--text)'>${p.nome} <small style='color:var(--muted)'>(${p.categoria||'Sem categoria'})</small></label>`;
+      div.appendChild(item);
+    });
+  }
+  document.getElementById('modalEditarCategoriaMassa').classList.add('active');
+}
+function fecharModalEditarCategoriaMassa(){document.getElementById('modalEditarCategoriaMassa').classList.remove('active');}
+function marcarTodosCatMassa(checked){
+  document.querySelectorAll('.chk-cat-massa').forEach(chk=>chk.checked=checked);
+}
+async function salvarCategoriaMassa(){
+  if(usuarioAtual.perfil!=='admin')return;
+  const novaCat=document.getElementById('novaCatMassa').value;
+  const selecionados=Array.from(document.querySelectorAll('.chk-cat-massa:checked')).map(chk=>parseInt(chk.value));
+  if(!selecionados.length){toast('Selecione pelo menos um produto!','warning');return;}
+  salvarSnapshot();
+  let alterados=0;
+  selecionados.forEach(id=>{
+    const p=appData.produtos.find(x=>x.id===id);
+    if(p){p.categoria=novaCat;alterados++;}
+  });
+  registrarLog('EDICAO',`Alterou categoria de ${alterados} produto(s) para '${novaCat||'Sem categoria'}'`);
+  await salvarDadosNoCloud();
+  toast(`${alterados} produto(s) atualizado(s)!`,'success');
+  fecharModalEditarCategoriaMassa();
+  mostrarUndo('Categorias alteradas. Desfazer?',restaurarSnapshot);
+}
+
+function atualizarFiltrosCategoria(){
+  const cats=appData.categorias||[];
+  ['filtroCategoria','filtroCompraCat','cadCategoria','editCategoria'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(!sel)return;
+    const val=sel.value;
+    sel.innerHTML='<option value=>Sem categoria</option>';
+    cats.forEach(c=>{sel.innerHTML+=`<option value='${c}'>${c}</option>`});
+    sel.value=val
+  })
+}
+function carregarSelects(){
+  const sel=document.getElementById('movProdutoId');
+  if(!sel)return;
+  sel.innerHTML='<option value=>Selecione...</option>';
+  appData.produtos.sort((a,b)=>(a.nome||'').localeCompare(b.nome||'')).forEach(p=>{
+    sel.innerHTML+=`<option value=${p.id}>${p.nome} (Saldo: ${formatarNumero(p.saldo_atual)} ${p.unidade})</option>`
+  });
+  const users=[...new Set((appData.logs||[]).map(l=>l.usuario).filter(Boolean))];
+  const userSel=document.getElementById('filtroLogUsuario');
+  if(userSel){
+    const val=userSel.value;
+    userSel.innerHTML='<option value=>Todos Usuarios</option>';
+    users.forEach(u=>{userSel.innerHTML+=`<option value='${u}'>${u}</option>`});
+    userSel.value=val
+  }
+}
+function atualizarInfoProdutoMov(){
+  const id=parseInt(document.getElementById('movProdutoId').value);
+  const div=document.getElementById('infoProdutoMov');
+  if(!id){div.style.display='none';return}
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p){div.style.display='none';return}
+  const pct=calcularPctEstoque(p);
+  const st=getStatusProduto(p);
+  const [lbl,cls]=getStatusLabel(st);
+  div.innerHTML=`<strong>${p.nome}</strong> | Saldo: <strong>${formatarNumero(p.saldo_atual)} ${p.unidade}</strong> | Min: ${formatarNumero(p.estoque_min)} | Max: ${formatarNumero(p.estoque_max)} | Status: <span class='badge ${cls}'>${lbl}</span> | Local: ${p.localizacao||'N/A'}`;
+  div.style.display='block'
+}
+async function salvarMovimentacao(e){
+  e.preventDefault();
+  if(usuarioAtual.perfil==='consulta'){toast('Acesso negado! Modo consulta.','error');return}
+  const prodId=parseInt(document.getElementById('movProdutoId').value);
+  const tipo=document.getElementById('movTipo').value;
+  const qtd=parseFloat(document.getElementById('movQtd').value);
+  const nf=document.getElementById('movNF').value;
+  const destino=document.getElementById('movDestino').value;
+  const resp=document.getElementById('movResp').value;
+  const obs=document.getElementById('movObs').value;
+  if(!prodId||isNaN(qtd)||qtd<=0){toast('Preencha todos os campos obrigatorios!','warning');return}
+  const produto=appData.produtos.find(p=>p.id===prodId);
+  if(!produto){toast('Produto nao encontrado!','error');return}
+  if(tipo==='SAIDA'&&produto.saldo_atual<qtd){toast('Saldo insuficiente para esta saida!','error');return}
+  salvarSnapshot();
+  if(tipo==='ENTRADA'||tipo==='DEVOLUCAO')produto.saldo_atual=(produto.saldo_atual||0)+qtd;
+  else if(tipo==='SAIDA')produto.saldo_atual=(produto.saldo_atual||0)-qtd;
+  const mov={id:Date.now(),produtoId:prodId,tipo,qtd,obs,destino,nf,resp,usuario:`${usuarioAtual.nome} (${usuarioAtual.perfil})`,data:new Date().toISOString()};
+  appData.movimentacoes.push(mov);
+  registrarLog(tipo,`${tipo} de ${formatarNumero(qtd)} ${produto.unidade} de '${produto.nome}'. ${destino?'Destino: '+destino+'. ':''}${nf?'NF: '+nf+'. ':''}${obs?'Obs: '+obs:''}`);
+  await salvarDadosNoCloud();
+  toast('Movimentacao registrada!','success');
+  document.getElementById('formMovimentar').reset();
+  document.getElementById('infoProdutoMov').style.display='none';
+  mostrarUndo('Movimentacao registrada. Desfazer?',restaurarSnapshot)
+}
+async function salvarNovoProduto(e){
+  e.preventDefault();
+  if(usuarioAtual.perfil!=='admin'){toast('Acesso negado!','error');return}
+  const nome=document.getElementById('cadNome').value.trim();
+  const categoria=document.getElementById('cadCategoria').value;
+  const unidade=document.getElementById('cadUnidade').value.trim();
+  const fornecedor=document.getElementById('cadFornecedor').value.trim();
+  const min=parseFloat(document.getElementById('cadMin').value)||0;
+  const max=parseFloat(document.getElementById('cadMax').value)||0;
+  const custo=parseFloat(document.getElementById('cadCusto').value)||0;
+  const venda=parseFloat(document.getElementById('cadVenda').value)||0;
+  const saldo=parseFloat(document.getElementById('cadSaldo').value)||0;
+  const local=document.getElementById('cadLocal').value.trim();
+  const obs=document.getElementById('cadObs').value.trim();
+  if(!nome||!unidade){toast('Preencha os campos obrigatorios!','warning');return}
+  if(min>max){toast('Estoque minimo nao pode ser maior que o maximo!','warning');return}
+  const novo={id:Date.now(),nome,categoria,unidade,fornecedor,estoque_min:min,estoque_max:max,preco_custo:custo,preco_venda:venda,saldo_atual:saldo,localizacao:local,observacoes:obs,data_cadastro:new Date().toISOString()};
+  appData.produtos.push(novo);
+  registrarLog('CADASTRO',`Cadastrou o produto '${nome}' com saldo inicial de ${formatarNumero(saldo)} ${unidade}`);
+  await salvarDadosNoCloud();
+  toast('Produto cadastrado com sucesso!','success');
+  document.getElementById('formCadastrar').reset();
+  mudarAba('estoque',document.querySelectorAll('.tab-btn')[1])
+}
+function abrirModalProduto(id){
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('modalProdutoTitulo').textContent=p.nome;
+  const movs=appData.movimentacoes.filter(m=>m.produtoId===id).sort((a,b)=>new Date(b.data)-new Date(a.data)).slice(0,5);
+  const valTot=(p.saldo_atual||0)*(p.preco_custo||0);
+  const lucro=p.preco_venda&&p.preco_custo?((p.preco_venda-p.preco_custo)/p.preco_custo*100).toFixed(1):null;
+  let html=`<div class=product-detail-grid><div><div class=info-row><span class=info-label>Codigo</span><span class=info-value>#${p.id}</span></div><div class=info-row><span class=info-label>Categoria</span><span class=info-value><span class='tag ${getCatClass(p.categoria)}'>${p.categoria||'-'}</span></span></div><div class=info-row><span class=info-label>Unidade</span><span class=info-value>${p.unidade}</span></div><div class=info-row><span class=info-label>Fornecedor</span><span class=info-value>${p.fornecedor||'-'}</span></div><div class=info-row><span class=info-label>Localizacao</span><span class=info-value>${p.localizacao||'-'}</span></div></div><div><div class=info-row><span class=info-label>Saldo Atual</span><span class=info-value style=font-size:1.1rem>${formatarNumero(p.saldo_atual)} ${p.unidade}</span></div><div class=info-row><span class=info-label>Estoque Minimo</span><span class=info-value>${formatarNumero(p.estoque_min)}</span></div><div class=info-row><span class=info-label>Estoque Maximo</span><span class=info-value>${formatarNumero(p.estoque_max)}</span></div><div class=info-row><span class=info-label>Preco Custo</span><span class=info-value>${p.preco_custo?formatarMoeda(p.preco_custo):'-'}</span></div><div class=info-row><span class=info-label>Preco Venda</span><span class=info-value>${p.preco_venda?formatarMoeda(p.preco_venda):'-'}</span></div>${lucro!==null?`<div class=info-row><span class=info-label>Margem</span><span class=info-value style=color:${lucro>0?'var(--success)':'var(--danger)'}>${lucro}%</span></div>`:''}<div class=info-row><span class=info-label>Valor em Estoque</span><span class=info-value style=font-size:1.1rem;font-weight:800>${valTot?formatarMoeda(valTot):'-'}</span></div></div></div>`;
+  if(p.observacoes){
+    html+=`<div style=margin-top:12px;padding:12px;background:var(--bg);border-radius:8px;font-size:.9rem><strong>Observacoes:</strong><br>${p.observacoes}</div>`
+  }
+  if(movs.length){
+    html+=`<div class=section-divider>Ultimas Movimentacoes</div><div class=history-timeline>`;
+    movs.forEach(m=>{
+      const tipo=m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO'?'log-entrada':'log-saida';
+      html+=`<div class=timeline-item><div class=timeline-dot style=background:${m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO'?'var(--success)':'var(--danger)'}></div><div class=timeline-date>${new Date(m.data).toLocaleString('pt-BR')}</div><div class=timeline-content><span class='${tipo}'>${m.tipo}</span> de <span class=timeline-qtd>${formatarNumero(m.qtd)} ${p.unidade}</span>${m.destino?' para '+m.destino:''}${m.nf?' (NF: '+m.nf+')':''}</div></div>`
+    });
+    html+='</div>'
+  }
+  document.getElementById('modalProdutoBody').innerHTML=html;
+  document.getElementById('modalProduto').classList.add('active')
+}
+function fecharModalProduto(){document.getElementById('modalProduto').classList.remove('active')}
+function abrirModalEditar(id){
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p||usuarioAtual.perfil!=='admin')return;
+  document.getElementById('editId').value=p.id;
+  document.getElementById('editNome').value=p.nome||'';
+  document.getElementById('editCategoria').value=p.categoria||'';
+  document.getElementById('editUnidade').value=p.unidade||'';
+  document.getElementById('editFornecedor').value=p.fornecedor||'';
+  document.getElementById('editMin').value=p.estoque_min||'';
+  document.getElementById('editMax').value=p.estoque_max||'';
+  document.getElementById('editCusto').value=p.preco_custo||'';
+  document.getElementById('editVenda').value=p.preco_venda||'';
+  document.getElementById('editLocal').value=p.localizacao||'';
+  document.getElementById('editObs').value=p.observacoes||'';
+  document.getElementById('modalEditar').classList.add('active')
+}
+function fecharModalEditar(){document.getElementById('modalEditar').classList.remove('active')}
+async function salvarEdicao(e){
+  e.preventDefault();
+  if(usuarioAtual.perfil!=='admin')return;
+  const id=parseInt(document.getElementById('editId').value);
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p)return;
+  const nomeOld=p.nome;
+  salvarSnapshot();
+  p.nome=document.getElementById('editNome').value.trim();
+  p.categoria=document.getElementById('editCategoria').value;
+  p.unidade=document.getElementById('editUnidade').value.trim();
+  p.fornecedor=document.getElementById('editFornecedor').value.trim();
+  p.estoque_min=parseFloat(document.getElementById('editMin').value)||0;
+  p.estoque_max=parseFloat(document.getElementById('editMax').value)||0;
+  p.preco_custo=parseFloat(document.getElementById('editCusto').value)||0;
+  p.preco_venda=parseFloat(document.getElementById('editVenda').value)||0;
+  p.localizacao=document.getElementById('editLocal').value.trim();
+  p.observacoes=document.getElementById('editObs').value.trim();
+  registrarLog('EDICAO',`Editou o produto '${nomeOld}' -> '${p.nome}'`);
+  await salvarDadosNoCloud();
+  toast('Produto atualizado!','success');
+  fecharModalEditar();
+  mostrarUndo('Edicao realizada. Desfazer?',restaurarSnapshot)
+}
+function confirmarExclusao(id){
+  if(usuarioAtual.perfil!=='admin')return;
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p)return;
+  abrirConfirmacao('Excluir Produto',`Tem certeza que deseja excluir '${p.nome}'? Esta acao nao pode ser desfeita.`,()=>executarExclusao(id))
+}
+async function executarExclusao(id){
+  salvarSnapshot();
+  const p=appData.produtos.find(x=>x.id===id);
+  appData.produtos=appData.produtos.filter(x=>x.id!==id);
+  appData.movimentacoes=appData.movimentacoes.filter(m=>m.produtoId!==id);
+  registrarLog('EXCLUSAO',`Excluiu o produto '${p?p.nome:'#'+id}'`);
+  await salvarDadosNoCloud();
+  toast('Produto excluido!','success');
+  mostrarUndo('Produto excluido. Desfazer?',restaurarSnapshot)
+}
+function abrirModalInventario(id){
+  if(usuarioAtual.perfil!=='admin')return;
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('invProdId').value=p.id;
+  document.getElementById('invProdNome').value=p.nome;
+  document.getElementById('invSaldoAtual').value=p.saldo_atual||0;
+  document.getElementById('invNovoSaldo').value=p.saldo_atual||0;
+  document.getElementById('invMotivo').value='';
+  document.getElementById('invObs').value='';
+  document.getElementById('modalInventario').classList.add('active')
+}
+function fecharModalInventario(){document.getElementById('modalInventario').classList.remove('active')}
+async function salvarInventario(e){
+  e.preventDefault();
+  if(usuarioAtual.perfil!=='admin')return;
+  const id=parseInt(document.getElementById('invProdId').value);
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p)return;
+  const novoSaldo=parseFloat(document.getElementById('invNovoSaldo').value);
+  const motivo=document.getElementById('invMotivo').value;
+  const obs=document.getElementById('invObs').value;
+  if(isNaN(novoSaldo)||novoSaldo<0||!motivo){toast('Preencha todos os campos obrigatorios!','warning');return}
+  const dif=novoSaldo-(p.saldo_atual||0);
+  salvarSnapshot();
+  p.saldo_atual=novoSaldo;
+  const mov={id:Date.now(),produtoId:id,tipo:'AJUSTE',qtd:Math.abs(dif),obs:`Inventario: ${motivo}. ${obs||''}`.trim(),destino:'Ajuste de inventario',usuario:`${usuarioAtual.nome} (${usuarioAtual.perfil})`,data:new Date().toISOString()};
+  appData.movimentacoes.push(mov);
+  registrarLog('AJUSTE',`Ajuste de inventario em '${p.nome}': saldo alterado de ${formatarNumero(p.saldo_atual-dif)} para ${formatarNumero(novoSaldo)}. Motivo: ${motivo}`);
+  await salvarDadosNoCloud();
+  toast('Inventario ajustado!','success');
+  fecharModalInventario();
+  mostrarUndo('Ajuste de inventario. Desfazer?',restaurarSnapshot)
+}
+function abrirModalMovProduto(id){
+  const p=appData.produtos.find(x=>x.id===id);
+  if(!p)return;
+  const movs=appData.movimentacoes.filter(m=>m.produtoId===id).sort((a,b)=>new Date(b.data)-new Date(a.data));
+  let html=`<div style=margin-bottom:16px><strong>${p.nome}</strong> | Saldo: ${formatarNumero(p.saldo_atual)} ${p.unidade}</div>`;
+  if(!movs.length){
+    html+='<div class=empty-state>Sem movimentacoes para este produto</div>'
+  }else{
+    html+='<div class=history-timeline>';
+    movs.forEach(m=>{
+      const tipo=m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO'?'log-entrada':m.tipo==='SAIDA'?'log-saida':'log-ajuste';
+      const cor=m.tipo==='ENTRADA'||m.tipo==='DEVOLUCAO'?'var(--success)':m.tipo==='SAIDA'?'var(--danger)':'var(--info)';
+      html+=`<div class=timeline-item><div class=timeline-dot style=background:${cor}></div><div class=timeline-date>${new Date(m.data).toLocaleString('pt-BR')}</div><div class=timeline-content><span class='${tipo}'>${m.tipo}</span> de <span class=timeline-qtd>${formatarNumero(m.qtd)} ${p.unidade}</span>${m.destino?' | '+m.destino:''}${m.nf?' | NF: '+m.nf:''}${m.usuario?' | '+m.usuario:''}${m.obs?'<br><small style=color:var(--muted)>'+m.obs+'</small>':''}</div></div>`
+    });
+    html+='</div>'
+  }
+  document.getElementById('modalMovProdutoBody').innerHTML=html;
+  document.getElementById('modalMovProduto').classList.add('active')
+}
+function fecharModalMovProduto(){document.getElementById('modalMovProduto').classList.remove('active')}
+function registrarLog(acao,detalhes){
+  const novoLog={id:Date.now(),data:new Date().toLocaleString('pt-BR'),usuario:`${usuarioAtual.nome} (${usuarioAtual.perfil})`,acao,detalhes};
+  if(!appData.logs)appData.logs=[];
+  appData.logs.unshift(novoLog);
+  if(appData.logs.length>500)appData.logs=appData.logs.slice(0,500)
+}
+function adicionarCategoria(){
+  if(usuarioAtual.perfil!=='admin')return;
+  const nome=document.getElementById('novaCategoria').value.trim();
+  if(!nome){toast('Digite o nome da categoria!','warning');return}
+  if(!appData.categorias)appData.categorias=[];
+  if(appData.categorias.includes(nome)){toast('Categoria ja existe!','warning');return}
+  appData.categorias.push(nome);
+  document.getElementById('novaCategoria').value='';
+  salvarDadosNoCloud();
+  toast('Categoria adicionada!','success');
+  renderizarCategoriasConfig()
+}
+function renderizarCategoriasConfig(){
+  const el=document.getElementById('listaCategorias');
+  if(!appData.categorias||!appData.categorias.length){
+    el.innerHTML='<p style=color:var(--muted);font-size:.9rem>Nenhuma categoria cadastrada</p>';
+    return
+  }
+  el.innerHTML='<div style=display:flex;flex-wrap:wrap;gap:8px>'+appData.categorias.map((c,i)=>`<span class='tag ${getCatClass(c)}' style=display:inline-flex;align-items:center;gap:6px;padding:6px 12px>${c}${usuarioAtual.perfil==='admin'?`<button onclick='removerCategoria(${i})' style=background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--danger);padding:0;line-height:1 title='Remover'>&times;</button>`:''}</span>`).join('')+'</div>'
+}
+function removerCategoria(idx){
+  if(usuarioAtual.perfil!=='admin')return;
+  const cat=appData.categorias[idx];
+  abrirConfirmacao('Remover Categoria',`Remover a categoria '${cat}'? Os produtos associados ficarao sem categoria.`,()=>{
+    appData.categorias.splice(idx,1);
+    appData.produtos.forEach(p=>{if(p.categoria===cat)p.categoria=''});
+    salvarDadosNoCloud();
+    toast('Categoria removida!','success');
+    renderizarCategoriasConfig();
+    atualizarUI()
+  })
+}
+function limparLogs(){
+  if(usuarioAtual.perfil!=='admin')return;
+  abrirConfirmacao('Limpar Logs','Isso removera todos os logs antigos, mantendo apenas os 50 mais recentes.',()=>{
+    if(appData.logs&&appData.logs.length>50){
+      appData.logs=appData.logs.slice(0,50);
+      salvarDadosNoCloud();
+      toast('Logs antigos removidos!','success');
+      renderizarLogs()
+    }
+  })
+}
+function exportarCSV(){
+  if(!appData.produtos.length){toast('Nenhum produto para exportar!','warning');return}
+  let csv='ID,Nome,Categoria,Unidade,Fornecedor,Estoque Minimo,Estoque Maximo,Saldo Atual,Preco Custo,Preco Venda,Valor Total,Localizacao,Status\n';
+  appData.produtos.forEach(p=>{
+    const st=getStatusProduto(p);
+    const [lbl]=getStatusLabel(st);
+    const val=(p.saldo_atual||0)*(p.preco_custo||0);
+    csv+=`${p.id},"${p.nome}","${p.categoria||''}","${p.unidade}","${p.fornecedor||''}",${p.estoque_min},${p.estoque_max},${p.saldo_atual},${p.preco_custo||0},${p.preco_venda||0},${val},"${p.localizacao||''}",${lbl}\n`
+  });
+  downloadFile(csv,'estoque_'+new Date().toISOString().split('T')[0]+'.csv','text/csv')
+}
+function exportarJSON(){
+  const data={exportado_em:new Date().toISOString(),total_produtos:appData.produtos.length,produtos:appData.produtos,movimentacoes:appData.movimentacoes,logs:appData.logs,categorias:appData.categorias};
+  downloadFile(JSON.stringify(data,null,2),'estoque_backup_'+new Date().toISOString().split('T')[0]+'.json','application/json')
+}
+function exportarListaComprasCSV(){
+  const lista=appData.produtos.filter(p=>(p.saldo_atual||0)<=(p.estoque_min||0));
+  if(!lista.length){toast('Nenhum item na lista de compras!','warning');return}
+  let csv='Produto,Categoria,Saldo Atual,Estoque Minimo,Estoque Maximo,Qtd Sugerida,Unidade,Custo Estimado,Fornecedor\n';
+  let total=0;
+  lista.forEach(p=>{
+    const sug=Math.max(0,(p.estoque_max||0)-(p.saldo_atual||0));
+    const custo=sug*(p.preco_custo||0);
+    total+=custo;
+    csv+=`"${p.nome}","${p.categoria||''}",${p.saldo_atual},${p.estoque_min},${p.estoque_max},${sug},"${p.unidade}",${custo},"${p.fornecedor||''}"\n`
+  });
+  csv+=`,,,,,,TOTAL,${total},`;
+  downloadFile(csv,'lista_compras_'+new Date().toISOString().split('T')[0]+'.csv','text/csv')
+}
+function exportarBackup(){
+  const data={exportado_em:new Date().toISOString(),versao:'2.0',produtos:appData.produtos,movimentacoes:appData.movimentacoes,logs:appData.logs,categorias:appData.categorias};
+  downloadFile(JSON.stringify(data,null,2),'backup_estoque_completo_'+new Date().toISOString().split('T')[0]+'.json','application/json')
+}
+function downloadFile(conteudo,nome,tipo){
+  const blob=new Blob([conteudo],{type:tipo});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=nome;
+  a.click();
+  URL.revokeObjectURL(url)
+}
+function importarBackup(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.produtos){toast('Arquivo invalido!','error');return}
+      abrirConfirmacao('Restaurar Backup','Isso substituira TODOS os dados atuais pelos do arquivo. Continuar?',()=>{
+        appData={produtos:data.produtos||[],movimentacoes:data.movimentacoes||[],logs:data.logs||[],categorias:data.categorias||['Medicamentos','Materiais','Equipamentos','Limpeza','Outros']};
+        salvarDadosNoCloud();
+        toast('Backup restaurado com sucesso!','success');
+        input.value=''
+      })
+    }catch(err){toast('Erro ao ler arquivo: '+err.message,'error')}
+  };
+  reader.readAsText(file)
+}
+function alterarSenhaAdmin(){
+  if(usuarioAtual.perfil!=='admin')return;
+  const n=document.getElementById('novaSenhaAdmin').value;
+  const c=document.getElementById('confSenhaAdmin').value;
+  if(!n||n.length<4){toast('A senha deve ter pelo menos 4 caracteres!','warning');return}
+  if(n!==c){toast('As senhas nao conferem!','warning');return}
+  SENHA_ADMIN=n;
+  localStorage.setItem('estoque_senha_admin',n);
+  document.getElementById('novaSenhaAdmin').value='';
+  document.getElementById('confSenhaAdmin').value='';
+  toast('Senha de admin alterada!','success')
+}
+function salvarConfigAPI(){
+  const bin=document.getElementById('configBinId').value.trim();
+  const key=document.getElementById('configMasterKey').value.trim();
+  if(!bin||!key){toast('Preencha Bin ID e Master Key!','warning');return}
+  localStorage.setItem('jsonbin_bin_id',bin);
+  localStorage.setItem('jsonbin_master_key',key);
+  toast('Configuracao salva! Recarregue a pagina.','success')
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('configBinId').value=JSONBIN_BIN_ID==='SEU_BIN_ID_AQUI'?'':JSONBIN_BIN_ID;
+  document.getElementById('configMasterKey').value=JSONBIN_MASTER_KEY==='SUA_MASTER_KEY_AQUI'?'':JSONBIN_MASTER_KEY;
+  // Sempre inicia com dados locais para nao ficar vazio
+  if(appData.produtos.length===0&&DADOS_INICIAIS){
+    appData=JSON.parse(JSON.stringify(DADOS_INICIAIS));
+    atualizarUI();
+  }
+  if(isJsonBinConfigurado()){
+    carregarDadosDoCloud();
+  }else{
+    // Sem JSONBin: mostra modal com aviso especial
+    mostrarAvisoConfiguracao();
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active'));
+    fecharConfirmacao()
+  }
+});
+</script>
+
+</body>
+</html>
+
