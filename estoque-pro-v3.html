@@ -2472,6 +2472,10 @@ let paginaEstoque=1;
 let paginaLogs=1;
 const ITENS_POR_PAGINA=10;
 let undoStack=[];
+function isJsonBinConfigurado(){
+  return JSONBIN_BIN_ID&&JSONBIN_BIN_ID!=='SEU_BIN_ID_AQUI'&&JSONBIN_MASTER_KEY&&JSONBIN_MASTER_KEY!=='SUA_MASTER_KEY_AQUI';
+}
+
 let ultimoSnapshot=null;
 let darkMode=localStorage.getItem('estoque_dark')==='true';
 if(darkMode){document.body.classList.add('dark');document.getElementById('darkToggle').checked=true}
@@ -2519,7 +2523,7 @@ async function carregarDadosDoCloud(forcar=false){
     const url=`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest?_t=${Date.now()}`;
     const res=await fetch(url,{headers:{'X-Master-Key':JSONBIN_MASTER_KEY}});
     if(!res.ok){
-      if(res.status===404) throw new Error('Bin nao encontrado. Verifique o Bin ID ou envie os dados iniciais na aba Configuracoes.');
+      if(res.status===404) throw new Error('Bin nao encontrado (404). Verifique o Bin ID ou clique em "Enviar Dados para Nuvem" na aba Configuracoes.');
       if(res.status===401||res.status===403) throw new Error('Chave de acesso invalida. Verifique a Master Key.');
       throw new Error('Erro HTTP '+res.status);
     }
@@ -2621,7 +2625,11 @@ function acessarComoVisitante(){
   document.getElementById('btnSalvarMov').disabled=true;
   document.getElementById('msgMovRestrito').style.display='block';
   document.querySelectorAll('.admin-only').forEach(el=>el.style.display='none');
-  carregarDadosDoCloud();
+  if(isJsonBinConfigurado()){
+    carregarDadosDoCloud();
+  }else{
+    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',6000);
+  }
 }
 
 function autenticar(){
@@ -2655,7 +2663,11 @@ function autenticar(){
     document.getElementById('msgMovRestrito').style.display='none';
     document.querySelectorAll('.admin-only').forEach(el=>el.style.display='inline-block')
   }
-  carregarDadosDoCloud()
+  if(isJsonBinConfigurado()){
+    carregarDadosDoCloud();
+  }else{
+    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',6000);
+  }
 }
 function sair(){
   usuarioAtual={nome:'',perfil:'consulta'};
@@ -3353,10 +3365,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     appData=JSON.parse(JSON.stringify(DADOS_INICIAIS));
     atualizarUI();
   }
-  if(JSONBIN_BIN_ID!=='SEU_BIN_ID_AQUI'&&JSONBIN_MASTER_KEY!=='SUA_MASTER_KEY_AQUI'){
+  if(isJsonBinConfigurado()){
     carregarDadosDoCloud();
   }else{
-    toast('Configure o Bin ID e Master Key na aba Configuracoes para sincronizar na nuvem!','warning',8000);
+    toast('Modo local ativo. Configure o JSONBin em Config > Dados da API para sincronizar na nuvem.','info',8000);
   }
 });
 document.addEventListener('keydown',e=>{
